@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const pages = [
   { href: "/dashboard", label: "Dashboard" },
-  { href: "/kosten", label: "Kosten-Tool" },
+  { href: "/kosten", label: "Kostenrechner" },
   { href: "/vergleich", label: "Vergleichsrechner" },
 ];
 
@@ -19,7 +19,6 @@ export default function Home() {
           className="rounded-2xl shadow-lg mb-2"
           style={{ filter: 'invert(1)' }}
         />
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight text-center mb-2">Harmonic Dashboard</h1>
         <div className="flex flex-col gap-4 w-full mt-4">
           {pages.map((page) => (
             <Link
@@ -30,10 +29,6 @@ export default function Home() {
               {page.label}
             </Link>
           ))}
-        </div>
-        <div className="mt-8 text-xs text-gray-400 text-center w-full">
-          Weitere Seiten erscheinen automatisch.<br />
-          <span className="text-gray-300">&copy; {new Date().getFullYear()} Harmonic</span>
         </div>
       </div>
     </div>
