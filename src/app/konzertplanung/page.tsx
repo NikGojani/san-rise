@@ -189,9 +189,9 @@ export default function Konzertplanung() {
         {/* Deutschlandkarte */}
         <div className="flex-1 p-4 sm:p-8">
           <div className="bg-white rounded-2xl shadow-sm p-6 h-full">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
               <h2 className="text-xl font-bold text-gray-800">Deutschlandkarte</h2>
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
                 <div className="flex items-center gap-2">
                   <FunnelIcon className="w-4 h-4 text-gray-400" />
                   <select
@@ -264,18 +264,18 @@ export default function Konzertplanung() {
                 onClick={() => setSelectedConcert(concert)}
               >
                 <div className="flex items-start justify-between mb-2">
-                  <h4 className="font-semibold text-gray-800 text-sm">{concert.title}</h4>
-                  <span className={`px-2 py-1 rounded-lg text-xs font-semibold ${getStatusColor(concert.status)}`}>
+                  <h4 className="font-semibold text-gray-800 text-sm flex-1 mr-2">{concert.title}</h4>
+                  <span className={`px-2 py-1 rounded-lg text-xs font-semibold flex-shrink-0 ${getStatusColor(concert.status)}`}>
                     {getStatusLabel(concert.status)}
                   </span>
                 </div>
                 <div className="text-xs text-gray-500 space-y-1">
                   <div className="flex items-center gap-1">
-                    <MapPinIcon className="w-3 h-3" />
-                    {concert.city} • {concert.venue}
+                    <MapPinIcon className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate">{concert.city} • {concert.venue}</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <CalendarIcon className="w-3 h-3" />
+                    <CalendarIcon className="w-3 h-3 flex-shrink-0" />
                     {new Date(concert.date).toLocaleDateString('de-DE')}
                   </div>
                   <div className="text-xs text-gray-600">
@@ -290,6 +290,14 @@ export default function Konzertplanung() {
         {/* Detail-Panel */}
         {selectedConcert && (
           <div className="w-full lg:w-80 bg-white border-l border-gray-100 p-4 sm:p-6 overflow-y-auto">
+            <div className="lg:hidden mb-4">
+              <button
+                onClick={() => setSelectedConcert(null)}
+                className="text-gray-500 hover:text-gray-700 text-sm font-semibold"
+              >
+                ← Zurück zur Liste
+              </button>
+            </div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-gray-800">Details</h3>
               <button
