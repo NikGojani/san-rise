@@ -223,7 +223,7 @@ function DashboardOverviewInner() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 p-4 md:p-6 relative">
+    <div className="min-h-screen bg-white text-gray-900 p-2 sm:p-4 md:p-6 relative">
       <div className="flex flex-col items-center mb-4 mt-2">
         <img src="/WhatsApp%20Image%202025-07-05%20at%2004.18.38.jpeg" alt="SAN RISE Logo" className="mx-auto mb-2 max-w-xs max-h-40 w-auto h-auto rounded-lg" style={{ filter: 'invert(1)' }} />
       </div>
@@ -240,8 +240,8 @@ function DashboardOverviewInner() {
         </div>
       </div>
       {/* Gesamtumsatz-Kasten */}
-      <div className="max-w-2xl mx-auto mb-6">
-        <div className="bg-gray-100 rounded-xl p-4 shadow flex flex-col items-center">
+      <div className="max-w-2xl mx-auto mb-6 w-full">
+        <div className="bg-gray-100 rounded-xl p-4 shadow flex flex-col items-center w-full">
           <span className="text-lg font-semibold mb-1">Gesamtumsatz</span>
           <span className="text-3xl font-bold text-green-600 mb-1">{modus === 'heute'
             ? (concerts.length * TICKETS_HEUTE * TICKET_PREIS).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })
@@ -255,14 +255,14 @@ function DashboardOverviewInner() {
         </div>
       </div>
       {/* Konzertliste */}
-      <div className="flex flex-col gap-4 max-w-2xl mx-auto">
+      <div className="flex flex-col gap-4 max-w-2xl mx-auto w-full">
         {concerts.map((concert) => {
           const { rest, durchschnitt, prozent, umsatz, kosten, gewinn, verkauft } = getConcertStats(concert);
           return (
             <Link
               key={concert.id}
               href={`/dashboard/${concert.id}?modus=${modus}`}
-              className="block bg-gray-100 rounded-xl p-4 shadow hover:bg-gray-200 transition-colors cursor-pointer text-gray-900"
+              className="block bg-gray-100 rounded-xl p-4 shadow hover:bg-gray-200 transition-colors cursor-pointer text-gray-900 w-full"
             >
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                 <div>
@@ -284,20 +284,19 @@ function DashboardOverviewInner() {
           );
         })}
       </div>
-      {/* Gewinnverteilung ganz unten */}
-      <div className="bg-gray-100 rounded-xl p-4 shadow flex flex-col items-center mt-10 mb-4">
+      {/* Gewinnverteilung mobil als gestapelte Liste */}
+      <div className="bg-gray-100 rounded-xl p-4 shadow flex flex-col items-center mt-10 mb-4 w-full max-w-2xl mx-auto">
         <span className="text-lg font-semibold mb-4 text-center w-full">Gewinnverteilung</span>
-        <div className="flex flex-col w-full max-w-2xl mx-auto gap-2 items-start justify-center">
+        <div className="flex flex-col w-full gap-4 items-stretch">
           {shareholderData.map((s, i) => {
             const value = Math.round(gesamtGewinn * s.percent / 100);
-            const width = s.percent;
             return (
-              <div key={s.name} className="grid grid-cols-[minmax(8rem,12rem)_16rem_auto_auto] items-center gap-4 w-full text-left">
+              <div key={s.name} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 w-full text-left bg-white rounded-lg shadow p-3">
                 <span className="min-w-32 max-w-xs flex-shrink-0 text-sm font-bold text-gray-700">{shareholderName(s.name)}</span>
-                <div className="h-4 w-64 bg-gray-200 rounded relative overflow-hidden max-w-full">
+                <div className="h-4 w-full bg-gray-200 rounded relative overflow-hidden max-w-full mt-2 sm:mt-0">
                   <div
                     className="h-4 bg-green-500 rounded"
-                    style={{ width: `${width}%`, transition: 'width 0.3s' }}
+                    style={{ width: `${s.percent}%`, transition: 'width 0.3s' }}
                   />
                 </div>
                 <span className="ml-2 text-sm font-bold text-green-600 min-w-[90px] text-left">
