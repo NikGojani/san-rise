@@ -85,10 +85,10 @@ export default function KostenTool() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-[system-ui,sans-serif] flex flex-col items-center justify-center p-4 relative">
-      <div className="flex flex-col md:flex-row gap-8 w-full max-w-7xl mt-8">
+    <div className="min-h-screen bg-white text-gray-900 font-[system-ui,sans-serif] flex flex-col items-center justify-center p-2 sm:p-4 relative">
+      <div className="flex flex-col gap-8 w-full max-w-4xl mt-8">
         {/* Einzeltermin */}
-        <div className="bg-white rounded-2xl p-8 flex-1 min-w-[320px] border border-gray-200 shadow-xl flex flex-col" style={{ minHeight: 600 }}>
+        <div className="bg-white rounded-2xl p-6 sm:p-8 flex-1 w-full border border-gray-200 shadow-xl flex flex-col" style={{ minHeight: 400 }}>
           <div className="text-lg font-bold mb-2 tracking-tight">SAMSTAGSTERMIN</div>
           <div className="flex flex-col gap-0 mb-4">
             <div className="font-bold text-2xl flex items-center gap-2">
@@ -175,7 +175,7 @@ export default function KostenTool() {
           </div>
         </div>
         {/* Monat */}
-        <div className="bg-white rounded-2xl p-8 flex-1 min-w-[320px] border border-gray-200 shadow-xl flex flex-col relative">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 flex-1 w-full border border-gray-200 shadow-xl flex flex-col relative">
           <div className="text-lg font-bold mb-2 tracking-tight">PRO MONAT</div>
           <div className="mb-4 font-bold text-2xl">{ticketsTotal * 2} Tickets</div>
           <div className="mb-4 text-sm font-normal text-gray-500">2 × {gewinn.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })} = {monatUmsatz.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</div>
@@ -194,15 +194,15 @@ export default function KostenTool() {
           <div className="mb-4">
             <div className="inline-block bg-[#33EB91] text-white rounded-xl px-3 py-1.5 font-bold text-base">GEWINN <span className="ml-2">{monatGewinnOpt.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span></div>
           </div>
-          {/* Gewinnverteilung PRO MONAT kompakt */}
-          <div className="mt-4 bg-gray-50 rounded-lg p-3 shadow flex flex-col gap-1">
+          {/* Gewinnverteilung PRO MONAT als gestapelte Liste */}
+          <div className="mt-4 bg-gray-50 rounded-lg p-3 shadow flex flex-col gap-3 w-full">
             <span className="text-xs font-semibold mb-1 text-center">Gewinnverteilung</span>
             {[{ name: 'Nik', percent: 31.5 }, { name: 'Adrian', percent: 31.5 }, { name: 'Sebastian', percent: 17 }, { name: 'Mexify', percent: 20 }].map((s, i) => {
               const value = Math.round(monatGewinn * s.percent / 100);
               return (
-                <div key={s.name} className="flex items-center gap-1 text-xs">
+                <div key={s.name} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 w-full text-left bg-white rounded-lg shadow p-2">
                   <span className="w-20 truncate font-bold text-gray-700">{s.name}</span>
-                  <div className="h-2 w-24 bg-gray-200 rounded relative overflow-hidden">
+                  <div className="h-2 w-full bg-gray-200 rounded relative overflow-hidden mt-2 sm:mt-0">
                     <div className="h-2 bg-green-500 rounded" style={{ width: `${s.percent}%` }} />
                   </div>
                   <span className="ml-1 font-bold text-green-600 min-w-[60px] text-right">{value.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span>
@@ -216,9 +216,9 @@ export default function KostenTool() {
               {[{ name: 'Nik', percent: 31.5 }, { name: 'Adrian', percent: 31.5 }, { name: 'Sebastian', percent: 17 }, { name: 'Mexify', percent: 20 }].map((s, i) => {
                 const value = Math.round(monatGewinnOpt * s.percent / 100);
                 return (
-                  <div key={s.name} className="flex items-center gap-1 text-[10px] opacity-80">
+                  <div key={s.name} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 w-full text-left bg-gray-50 rounded-lg shadow p-2 opacity-80">
                     <span className="w-20 truncate font-bold text-gray-400">{s.name}</span>
-                    <div className="h-1.5 w-24 bg-gray-100 rounded relative overflow-hidden">
+                    <div className="h-1.5 w-full bg-gray-100 rounded relative overflow-hidden mt-2 sm:mt-0">
                       <div className="h-1.5 bg-green-300 rounded" style={{ width: `${s.percent}%` }} />
                     </div>
                     <span className="ml-1 font-bold text-green-500 min-w-[60px] text-right">{value.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span>
@@ -230,7 +230,7 @@ export default function KostenTool() {
           </div>
         </div>
         {/* Jahr */}
-        <div className="bg-white rounded-2xl p-8 flex-1 min-w-[320px] border border-gray-200 shadow-xl flex flex-col relative" style={{ minHeight: 600 }}>
+        <div className="bg-white rounded-2xl p-6 sm:p-8 flex-1 w-full border border-gray-200 shadow-xl flex flex-col relative" style={{ minHeight: 400 }}>
           <div className="text-lg font-bold mb-2 tracking-tight">PRO JAHR</div>
           <div className="mb-4 font-bold text-2xl">2 TERMINE × 12 MONATE {ticketsTotal * 12} Tickets</div>
           <div className="mb-4 text-lg">12 × <span className="font-normal text-gray-600">{monatGewinn.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span> <span className="font-bold text-gray-800">{jahrUmsatz.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span></div>
@@ -246,15 +246,15 @@ export default function KostenTool() {
               </span>
             )}
           </div>
-          {/* Gewinnverteilung PRO JAHR kompakt */}
-          <div className="mt-4 bg-gray-50 rounded-lg p-3 shadow flex flex-col gap-1">
+          {/* Gewinnverteilung PRO JAHR als gestapelte Liste */}
+          <div className="mt-4 bg-gray-50 rounded-lg p-3 shadow flex flex-col gap-3 w-full">
             <span className="text-xs font-semibold mb-1 text-center">Gewinnverteilung</span>
             {[{ name: 'Nik', percent: 31.5 }, { name: 'Adrian', percent: 31.5 }, { name: 'Sebastian', percent: 17 }, { name: 'Mexify', percent: 20 }].map((s, i) => {
               const value = Math.round(jahrUmsatz * s.percent / 100);
               return (
-                <div key={s.name} className="flex items-center gap-1 text-xs">
+                <div key={s.name} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 w-full text-left bg-white rounded-lg shadow p-2">
                   <span className="w-20 truncate font-bold text-gray-700">{s.name}</span>
-                  <div className="h-2 w-24 bg-gray-200 rounded relative overflow-hidden">
+                  <div className="h-2 w-full bg-gray-200 rounded relative overflow-hidden mt-2 sm:mt-0">
                     <div className="h-2 bg-green-500 rounded" style={{ width: `${s.percent}%` }} />
                   </div>
                   <span className="ml-1 font-bold text-green-600 min-w-[60px] text-right">{value.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span>
@@ -268,9 +268,9 @@ export default function KostenTool() {
               {[{ name: 'Nik', percent: 31.5 }, { name: 'Adrian', percent: 31.5 }, { name: 'Sebastian', percent: 17 }, { name: 'Mexify', percent: 20 }].map((s, i) => {
                 const value = Math.round(jahrUmsatzOpt * s.percent / 100);
                 return (
-                  <div key={s.name} className="flex items-center gap-1 text-[10px] opacity-80">
+                  <div key={s.name} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 w-full text-left bg-gray-50 rounded-lg shadow p-2 opacity-80">
                     <span className="w-20 truncate font-bold text-gray-400">{s.name}</span>
-                    <div className="h-1.5 w-24 bg-gray-100 rounded relative overflow-hidden">
+                    <div className="h-1.5 w-full bg-gray-100 rounded relative overflow-hidden mt-2 sm:mt-0">
                       <div className="h-1.5 bg-green-300 rounded" style={{ width: `${s.percent}%` }} />
                     </div>
                     <span className="ml-1 font-bold text-green-500 min-w-[60px] text-right">{value.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span>
@@ -280,15 +280,17 @@ export default function KostenTool() {
               })}
             </div>
           </div>
-          {/* Export-Button unten rechts */}
-          <button
-            className="absolute bottom-8 right-8 bg-[#00E676] shadow-lg rounded-xl p-4 hover:bg-green-500 transition flex items-center gap-2 text-white font-bold text-lg"
-            onClick={() => exportCSV(data, verkauft, umsatz, kosten, gewinn, kostenOpt, gewinnOpt, monatGewinn, monatGewinnOpt, jahrUmsatz, jahrUmsatzOpt)}
-            title="Kostenaufstellung als Excel herunterladen"
-          >
-            <ArrowDownTrayIcon className="w-6 h-6 text-white" />
-            <span className="font-semibold text-lg hidden md:inline">Export</span>
-          </button>
+          {/* Export-Button immer unten und zentriert */}
+          <div className="flex justify-center mt-8">
+            <button
+              className="bg-[#00E676] shadow-lg rounded-xl p-4 hover:bg-green-500 transition flex items-center gap-2 text-white font-bold text-lg"
+              onClick={() => exportCSV(data, verkauft, umsatz, kosten, gewinn, kostenOpt, gewinnOpt, monatGewinn, monatGewinnOpt, jahrUmsatz, jahrUmsatzOpt)}
+              title="Kostenaufstellung als Excel herunterladen"
+            >
+              <ArrowDownTrayIcon className="w-6 h-6 text-white" />
+              <span className="font-semibold text-lg">Export</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
