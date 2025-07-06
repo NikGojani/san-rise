@@ -139,6 +139,17 @@ const kalenderEvents = [
   },
 ];
 
+// Gewinnverteilung Daten und Hilfsfunktion
+const shareholderData = [
+  { name: 'Nik Gojani', percent: 31.5 },
+  { name: 'Adrian Henningsen', percent: 31.5 },
+  { name: 'Sebastian Tury', percent: 17 },
+  { name: 'Team Mexify GmbH', percent: 20 },
+];
+function shareholderName(name: string) {
+  return <span className="whitespace-nowrap font-bold text-gray-700">{name}</span>;
+}
+
 export default function DashboardDetail({ concert, modus = 'gesamt', updateConcertName }: DashboardDetailProps) {
   const router = useRouter();
   const [zeitraum, setZeitraum] = useState('7');
@@ -229,14 +240,14 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
   const [isEditingTitle, setIsEditingTitle] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 p-4 md:p-6">
+    <div className="min-h-screen bg-white text-gray-900 p-2 sm:p-4 md:p-6">
       <div className="flex flex-col items-start mb-4 mt-2">
       </div>
       <div className="flex items-center gap-2 mb-6">
         {isEditingTitle ? (
           <input
             type="text"
-            className="text-2xl font-bold border-b-2 border-blue-400 focus:outline-none bg-transparent text-left"
+            className="text-2xl font-bold border-b-2 border-blue-400 focus:outline-none bg-transparent text-left w-full max-w-xs"
             value={editTitleValue}
             autoFocus
             onChange={e => setEditTitleValue(e.target.value)}
@@ -245,7 +256,7 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
             style={{ minWidth: 120 }}
           />
         ) : (
-          <h1 className="text-2xl font-bold text-left">{concert.name}</h1>
+          <h1 className="text-2xl font-bold text-left break-words max-w-xs sm:max-w-md md:max-w-2xl">{concert.name}</h1>
         )}
         <button
           className="ml-2 p-1 rounded hover:bg-gray-200"
@@ -257,7 +268,7 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         {/* Ticket-Status */}
-        <div className="bg-gray-100 rounded-lg p-4 shadow flex flex-col justify-between min-h-[170px] md:col-span-1">
+        <div className="bg-gray-100 rounded-lg p-4 shadow flex flex-col justify-between min-h-[170px] md:col-span-1 w-full">
           <h2 className="text-lg font-semibold mb-2">Ticket-Status</h2>
           <div className="mb-2">
             {vorstellungen.map((v, i) => (
@@ -283,7 +294,7 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
           </div>
         </div>
         {/* Prognose */}
-        <div className="bg-gray-100 rounded-lg p-4 shadow flex flex-col justify-between min-h-[170px] md:col-span-1">
+        <div className="bg-gray-100 rounded-lg p-4 shadow flex flex-col justify-between min-h-[170px] md:col-span-1 w-full">
           <h2 className="text-lg font-semibold mb-2">Prognose</h2>
           <div className="h-40">
             <Line data={{
@@ -300,7 +311,7 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
           </div>
         </div>
         {/* Meta Ads Übersicht (noch dunkler blau, weiße Schrift) */}
-        <div className="bg-blue-700 rounded-lg p-4 shadow flex flex-col justify-between min-h-[170px] md:col-span-1">
+        <div className="bg-blue-700 rounded-lg p-4 shadow flex flex-col justify-between min-h-[170px] md:col-span-1 w-full">
           <div className="flex items-center mb-2 gap-2 justify-between">
             <img src="/pngimg.com%20-%20meta_PNG7.png" alt="Meta Logo" className="h-6 w-auto object-contain" />
             <button
@@ -354,10 +365,10 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
             <span className="text-blue-100">{metaAds.cpa.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span>
           </div>
         </div>
-        {/* Spend/Conversion und Umsatz nebeneinander */}
-        <div className="flex flex-row gap-4 min-h-[170px] md:col-span-2">
+        {/* Spend/Conversion und Umsatz nebeneinander, auf Mobil untereinander */}
+        <div className="flex flex-col md:flex-row gap-4 min-h-[170px] md:col-span-2 w-full">
           {/* Spend/Conversion */}
-          <div className="bg-gray-100 rounded-lg p-4 shadow flex-1 flex flex-col justify-between min-h-[170px]">
+          <div className="bg-gray-100 rounded-lg p-4 shadow flex-1 flex flex-col justify-between min-h-[170px] w-full">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-lg font-semibold">Spend / Conversion</h2>
               <select
@@ -384,7 +395,7 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
             </div>
           </div>
           {/* Umsatz-Box */}
-          <div className="bg-gray-100 rounded-lg p-4 shadow flex flex-col justify-start min-h-[170px] w-56 min-w-[140px] ml-2">
+          <div className="bg-gray-100 rounded-lg p-4 shadow flex flex-col justify-start min-h-[170px] w-full mt-4 md:mt-0 md:w-56 md:min-w-[140px] md:ml-2">
             <div className="flex flex-col items-start">
               <h2 className="text-lg font-semibold mb-1">Umsatz</h2>
               <div className={`text-2xl font-bold mb-1 ${umsatz >= 0 ? 'text-green-600' : 'text-red-500'}`}>{umsatz.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</div>
@@ -551,6 +562,30 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
               </div>
             )}
           </div>
+        </div>
+      </div>
+      {/* Gewinnverteilung mobil als gestapelte Liste */}
+      <div className="bg-gray-100 rounded-xl p-4 shadow flex flex-col items-center mt-10 mb-4 w-full max-w-2xl mx-auto">
+        <span className="text-lg font-semibold mb-4 text-center w-full">Gewinnverteilung</span>
+        <div className="flex flex-col w-full gap-4 items-stretch">
+          {shareholderData.map((s, i) => {
+            const value = Math.round(gewinn * s.percent / 100);
+            return (
+              <div key={s.name} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 w-full text-left bg-white rounded-lg shadow p-3">
+                <span className="min-w-32 max-w-xs flex-shrink-0 text-sm font-bold text-gray-700">{shareholderName(s.name)}</span>
+                <div className="h-4 w-full bg-gray-200 rounded relative overflow-hidden max-w-full mt-2 sm:mt-0">
+                  <div
+                    className="h-4 bg-green-500 rounded"
+                    style={{ width: `${s.percent}%`, transition: 'width 0.3s' }}
+                  />
+                </div>
+                <span className="ml-2 text-sm font-bold text-green-600 min-w-[90px] text-left">
+                  {value.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                </span>
+                <span className="ml-2 text-xs text-gray-500 text-left">({s.percent}%)</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
