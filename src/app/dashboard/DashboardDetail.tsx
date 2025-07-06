@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useRouter } from 'next/navigation';
 import { saveAs } from 'file-saver';
-import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import { PencilSquareIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -196,6 +196,9 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
   const [extraKosten, setExtraKosten] = useState<{ name: string; value: number }[]>([]);
   const [newKostenName, setNewKostenName] = useState('');
   const [newKostenValue, setNewKostenValue] = useState('');
+  const [showSettings, setShowSettings] = useState(false);
+  const [shopifyApiKey, setShopifyApiKey] = useState('');
+  const [metaApiKey, setMetaApiKey] = useState('');
 
   // metaAds.budget ist der aktuelle Marketingwert (Dummy, später API)
   const marketing = metaAds.budget;
@@ -588,6 +591,70 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
           })}
         </div>
       </div>
+
+      {/* Einstellungsmenü */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <button
+          onClick={() => setShowSettings(!showSettings)}
+          className="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition-all"
+        >
+          <Cog6ToothIcon className="w-6 h-6" />
+        </button>
+      </div>
+
+      {showSettings && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">API-Einstellungen</h3>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Shopify API Key</label>
+                <input
+                  type="password"
+                  value={shopifyApiKey}
+                  onChange={(e) => setShopifyApiKey(e.target.value)}
+                  className="w-full bg-gray-100 rounded-lg px-3 py-2 text-sm border-none outline-none"
+                  placeholder="Shopify API Key eingeben"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Meta API Key</label>
+                <input
+                  type="password"
+                  value={metaApiKey}
+                  onChange={(e) => setMetaApiKey(e.target.value)}
+                  className="w-full bg-gray-100 rounded-lg px-3 py-2 text-sm border-none outline-none"
+                  placeholder="Meta API Key eingeben"
+                />
+              </div>
+
+              <div className="text-xs text-gray-500">
+                Diese API-Keys werden für die Integration mit Shopify (Ticketverkauf) und Meta (Werbekennzahlen) verwendet.
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setShowSettings(false)}
+                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200"
+              >
+                Schließen
+              </button>
+              <button
+                onClick={() => {
+                  // Hier später: API-Keys speichern und testen
+                  setShowSettings(false);
+                }}
+                className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600"
+              >
+                Speichern
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 
