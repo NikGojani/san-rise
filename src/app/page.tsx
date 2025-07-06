@@ -7,6 +7,8 @@ const pages = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/kosten", label: "Kostenrechner" },
   { href: "/vergleich", label: "Vergleichsrechner" },
+  { href: "/projekte", label: "Projektmanagement" },
+  { href: "/konzertplanung", label: "Konzertplanung" },
 ];
 
 const accounts = ["Stury", "Nik", "Adrian", "Peen"];
