@@ -12,8 +12,8 @@ export default function Vergleich() {
   const vergleichBetragNeu = neededUmsatz * (anteilNeu / 100);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 font-[system-ui,sans-serif]">
-      <div className="w-full max-w-xl bg-white rounded-3xl shadow-2xl p-8 flex flex-col gap-8 mt-8 mb-8 border border-gray-100">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-2 sm:p-6 font-[system-ui,sans-serif]">
+      <div className="w-full max-w-xl bg-white rounded-3xl shadow-2xl p-4 sm:p-8 flex flex-col gap-8 mt-8 mb-8 border border-gray-100">
         <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center tracking-tight">Vergleichsrechner</h1>
         <p className="text-center text-gray-500 mb-4 text-lg">Finde heraus, wie viel Umsatz oder Gewinn du in einer neuen Firma brauchst, um mit einem höheren Anteil auf denselben Auszahlungsbetrag zu kommen.</p>
         <div className="flex flex-col gap-8 mt-8">
@@ -34,13 +34,13 @@ export default function Vergleich() {
             </div>
           </div>
           <div className="flex flex-col gap-6 mt-8">
-            <div className="flex flex-col md:flex-row gap-8 items-center justify-between">
-              <div className="flex-1 flex flex-col items-center bg-gray-50 rounded-2xl p-6 shadow">
+            <div className="flex flex-col gap-4 sm:flex-row sm:gap-8 items-center justify-between w-full">
+              <div className="flex-1 flex flex-col items-center bg-gray-50 rounded-2xl p-4 sm:p-6 shadow w-full mb-4 sm:mb-0">
                 <span className="text-gray-500 text-base mb-1">Aktuelle Firma</span>
                 <span className="text-3xl font-bold text-gray-900">{(betragAlt * (anteilAlt / 100)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span>
                 <span className="text-gray-400 text-sm">bei {anteilAlt}% Anteil</span>
               </div>
-              <div className="flex-1 flex flex-col items-center bg-gray-50 rounded-2xl p-6 shadow">
+              <div className="flex-1 flex flex-col items-center bg-gray-50 rounded-2xl p-4 sm:p-6 shadow w-full">
                 <span className="text-gray-500 text-base mb-1">Neue Firma</span>
                 <span className="text-3xl font-bold text-blue-600">{(betragAlt * (anteilNeu / 100)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span>
                 <span className="text-gray-400 text-sm">bei {anteilNeu}% Anteil</span>
@@ -66,7 +66,7 @@ export default function Vergleich() {
                   const aktuell = betragAlt * (anteilAlt / 100);
                   const neededGewinn = aktuell / (anteilNeu / 100);
                   return (
-                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 px-6 py-5 flex flex-col items-center max-w-xs w-full">
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 px-4 sm:px-6 py-5 flex flex-col items-center max-w-xs w-full">
                       <span className="text-gray-500 text-base mb-1 text-center">Benötigter Gewinn der neuen Firma</span>
                       <span className="text-2xl md:text-3xl font-bold text-green-600 mb-1">{neededGewinn.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span>
                       <span className="text-gray-400 text-xs text-center">Damit du mit {anteilNeu}% wieder auf {aktuell.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })} kommst</span>
