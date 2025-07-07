@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./Header";
+import Sidebar from "./Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,8 +35,13 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="SAN RISE" />
       </head>
       <body className={inter.className}>
-        <Header />
-        {children}
+        <div style={{ display: 'flex', minHeight: '100vh', background: '#fafafc' }}>
+          <Sidebar />
+          <div style={{ flex: 1, maxWidth: '100vw', overflowX: 'auto' }}>
+            <Header />
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );

@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
+  const router = useRouter();
   return (
     <header
       style={{
@@ -33,7 +35,7 @@ export default function Header() {
           cursor: 'pointer',
           transition: 'background 0.2s',
         }}
-        onClick={() => alert('Logout-Logik hier einfügen')}
+        onClick={() => router.push('/login')}
         onMouseOver={e => (e.currentTarget.style.background = '#e5e5ea')}
         onMouseOut={e => (e.currentTarget.style.background = '#f5f5f7')}
       >

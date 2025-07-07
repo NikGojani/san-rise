@@ -115,7 +115,7 @@ export default function Kalender() {
         </div>
         {/* Modal Platzhalter */}
         {selectedTask && (
-          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-[#f5f5f7]/80 flex items-center justify-center z-50">
             <div className="bg-white rounded-2xl p-6 shadow-xl min-w-[300px] max-w-xs">
               <div className="font-bold text-lg mb-2">{selectedTask.title}</div>
               <div className="mb-1">Verantwortlich: <span className="font-semibold">{selectedTask.assigned}</span></div>

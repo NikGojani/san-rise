@@ -11,12 +11,12 @@ const pages = [
   { href: "/konzertplanung", label: "Konzertplanung" },
 ];
 
-const accounts = ["Stury", "Nik", "Adrian", "Peen"];
+const allowedUsers = ["Nik", "Peen", "Stury", "Adrian"];
 const PASSWORD = "wirwollengeld";
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [account, setAccount] = useState(accounts[0]);
+  const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -28,6 +28,10 @@ export default function Home() {
 
   function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+    if (!allowedUsers.includes(account.trim())) {
+      setError("Unbekannter Benutzername");
+      return;
+    }
     if (password === PASSWORD) {
       setLoggedIn(true);
       if (typeof window !== "undefined") {
@@ -53,13 +57,13 @@ export default function Home() {
           />
           <form onSubmit={handleLogin} className="flex flex-col gap-4 w-full bg-gray-50 rounded-2xl shadow p-6">
             <h2 className="text-2xl font-bold text-center mb-2">Login</h2>
-            <select
+            <input
               className="w-full rounded-xl border border-gray-200 px-4 py-3 text-lg focus:ring-2 focus:ring-blue-400"
+              placeholder="Name (Nik, Peen, Stury, Adrian)"
               value={account}
               onChange={e => setAccount(e.target.value)}
-            >
-              {accounts.map(acc => <option key={acc}>{acc}</option>)}
-            </select>
+              autoComplete="username"
+            />
             <input
               type="password"
               className="w-full rounded-xl border border-gray-200 px-4 py-3 text-lg focus:ring-2 focus:ring-blue-400"

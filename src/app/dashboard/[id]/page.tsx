@@ -10,17 +10,17 @@ type Props = {
 };
 
 export default function ConcertDetailPage({ params }: Props) {
-  const paramsObj = React.use(params) as { id: string } | undefined;
-  const id = paramsObj?.id;
+  // const paramsObj = React.use(params) as { id: string } | undefined;
+  const id = params.id;
   const searchParams = useSearchParams();
   const router = useRouter();
-  const modus = searchParams.get('modus') || 'gesamt';
+  const modus = searchParams.get('modus') === 'heute' ? 'heute' : 'gesamt';
   const { concerts, updateConcertName } = useConcerts();
   const concert = concerts.find((c) => c.id === id);
 
   if (!concert) {
     return (
-      <div className="min-h-screen bg-black text-white p-6">
+      <div className="min-h-screen bg-white text-gray-800 p-6">
         <h1 className="text-2xl font-bold mb-4">Konzert nicht gefunden</h1>
         <p>Es wurde kein Konzert mit der ID "{id}" gefunden.</p>
       </div>

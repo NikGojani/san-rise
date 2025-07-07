@@ -82,11 +82,8 @@ export default function Projekte() {
       {/* Hauptbereich */}
       <main className="flex-1 flex flex-col min-h-screen">
         {/* Topbar */}
-        <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-white border-b border-gray-100 shadow-sm">
-          <div className="flex items-center gap-2 w-full max-w-xs">
-            <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
-            <input className="w-full bg-gray-100 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-200 outline-none" placeholder="Suche..." />
-          </div>
+        <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-white border-b border-gray-100 shadow-sm" style={{borderRadius: '18px 18px 0 0', boxShadow: '0 2px 12px rgba(0,0,0,0.07)', marginBottom: '1.5rem', marginTop: '1.5rem'}}>
+          <h1 className="text-2xl font-bold text-gray-800" style={{letterSpacing: '-0.01em'}}>Projekte</h1>
           <div className="flex items-center gap-4">
             <BellIcon className="w-6 h-6 text-gray-400" />
             <UserCircleIcon className="w-8 h-8 text-gray-400" />
@@ -162,18 +159,6 @@ export default function Projekte() {
                       onChange={e => setTasks(ts => ts.map(t => t.id === task.id ? { ...t, drive: e.target.value } : t))}
                       placeholder="https://drive.google.com/..."
                     />
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <span>Fortschritt:</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={task.progress}
-                      onChange={e => setTasks(ts => ts.map(t => t.id === task.id ? { ...t, progress: Number(e.target.value) } : t))}
-                      className="w-24"
-                    />
-                    <span className="font-bold text-gray-700">{task.progress}%</span>
                   </div>
                 </div>
               ))}

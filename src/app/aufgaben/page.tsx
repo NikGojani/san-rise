@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { MagnifyingGlassIcon, ListBulletIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, ListBulletIcon, Squares2X2Icon, PlusIcon } from "@heroicons/react/24/outline";
 
 const initialTasks = [
   { id: 1, title: "Location Recherche", assigned: "Nik", due: "2024-08-15", status: "todo", priority: "mittel", category: "Orga" },
@@ -22,6 +22,9 @@ export default function Aufgaben() {
   const [search, setSearch] = useState("");
   const [categories, setCategories] = useState(["Alle", "Orga", "Finanzen", "Marketing"]);
   const [selectedCategory, setSelectedCategory] = useState("Alle");
+  const [showAdd, setShowAdd] = useState(false);
+  const [form, setForm] = useState({ title: '', assigned: '', due: '', priority: 'mittel', category: categories[1] || '' });
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const saved = localStorage.getItem("categories");
@@ -39,8 +42,8 @@ export default function Aufgaben() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 shadow-sm px-4 sm:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-gray-800">Aufgaben</h1>
+      <header className="bg-white border-b border-gray-100 shadow-sm px-4 sm:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4" style={{borderRadius: '18px 18px 0 0', boxShadow: '0 2px 12px rgba(0,0,0,0.07)', marginBottom: '1.5rem', marginTop: '1.5rem'}}>
+        <h1 className="text-2xl font-bold text-gray-800" style={{letterSpacing: '-0.01em'}}>Aufgaben</h1>
         <div className="flex items-center gap-2 w-full max-w-xs">
           <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
           <input
@@ -53,6 +56,13 @@ export default function Aufgaben() {
         <div className="flex gap-2">
           <button onClick={() => setView('list')} className={`p-2 rounded-xl ${view === 'list' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-400'}`}><ListBulletIcon className="w-5 h-5" /></button>
           <button onClick={() => setView('card')} className={`p-2 rounded-xl ${view === 'card' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-400'}`}><Squares2X2Icon className="w-5 h-5" /></button>
+          <button
+            onClick={() => { setShowAdd(true); setError(''); setForm({ title: '', assigned: '', due: '', priority: 'mittel', category: categories[1] || '' }); }}
+            className="ml-2 flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl px-4 py-2 font-semibold shadow"
+            style={{transition: 'background 0.2s'}}
+          >
+            <PlusIcon className="w-5 h-5" /> Aufgabe hinzufügen
+          </button>
         </div>
       </header>
       <nav className="flex gap-2 px-4 sm:px-8 py-2 bg-white border-b border-gray-100">
@@ -130,6 +140,70 @@ export default function Aufgaben() {
           </div>
         )}
       </main>
+      {showAdd && (
+        <div className="fixed inset-0 bg-[#f5f5f7]/80 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 shadow-xl min-w-[320px] max-w-xs flex flex-col gap-4" style={{fontFamily: 'system-ui, sans-serif'}}>
+            <h2 className="text-xl font-bold mb-2">Neue Aufgabe</h2>
+            {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
+            <input
+              className="bg-gray-100 rounded-xl px-3 py-2 text-sm outline-none"
+              placeholder="Titel*"
+              value={form.title}
+              onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
+            />
+            <input
+              className="bg-gray-100 rounded-xl px-3 py-2 text-sm outline-none"
+              placeholder="Verantwortlich*"
+              value={form.assigned}
+              onChange={e => setForm(f => ({ ...f, assigned: e.target.value }))}
+            />
+            <input
+              type="date"
+              className="bg-gray-100 rounded-xl px-3 py-2 text-sm outline-none"
+              value={form.due}
+              onChange={e => setForm(f => ({ ...f, due: e.target.value }))}
+            />
+            <select
+              className="bg-gray-100 rounded-xl px-3 py-2 text-sm outline-none"
+              value={form.priority}
+              onChange={e => setForm(f => ({ ...f, priority: e.target.value }))}
+            >
+              {priorities.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
+            </select>
+            <select
+              className="bg-gray-100 rounded-xl px-3 py-2 text-sm outline-none"
+              value={form.category}
+              onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
+            >
+              {categories.filter(c => c !== 'Alle').map(cat => <option key={cat}>{cat}</option>)}
+            </select>
+            <div className="flex gap-2 mt-2">
+              <button
+                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white rounded-xl py-2 font-semibold"
+                onClick={() => {
+                  if (!form.title.trim() || !form.assigned.trim() || !form.due.trim()) {
+                    setError('Bitte alle Pflichtfelder ausfüllen!');
+                    return;
+                  }
+                  setTasks(ts => [
+                    ...ts,
+                    { id: Date.now(), ...form, status: 'todo' },
+                  ]);
+                  setShowAdd(false);
+                }}
+              >
+                Hinzufügen
+              </button>
+              <button
+                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl py-2 font-semibold"
+                onClick={() => setShowAdd(false)}
+              >
+                Abbrechen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 
