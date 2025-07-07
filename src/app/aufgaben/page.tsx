@@ -16,7 +16,7 @@ const priorities = [
   { value: "niedrig", label: "Niedrig", color: "bg-green-500 text-white" },
 ];
 
-export default function Aufgaben() {
+export default function Projekte() {
   const [tasks, setTasks] = useState(initialTasks);
   const [view, setView] = useState<'list' | 'card'>("card");
   const [search, setSearch] = useState("");
@@ -43,7 +43,7 @@ export default function Aufgaben() {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-100 shadow-sm px-4 sm:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4" style={{borderRadius: '18px 18px 0 0', boxShadow: '0 2px 12px rgba(0,0,0,0.07)', marginBottom: '1.5rem', marginTop: '1.5rem'}}>
-        <h1 className="text-2xl font-bold text-gray-800" style={{letterSpacing: '-0.01em'}}>Aufgaben</h1>
+        <h1 className="text-2xl font-bold text-gray-800" style={{letterSpacing: '-0.01em'}}>Projekte</h1>
         <div className="flex items-center gap-2 w-full max-w-xs">
           <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
           <input
@@ -103,7 +103,7 @@ export default function Aufgaben() {
             <tbody>
               {filtered.map(task => (
                 <tr key={task.id} className="border-t border-gray-100 hover:bg-blue-50 transition">
-                  <td className="p-3 font-semibold">{task.title}</td>
+                  <td className="p-3 font-semibold text-gray-900">{task.title}</td>
                   <td className="p-3">{task.assigned}</td>
                   <td className="p-3">{task.due}</td>
                   <td className="p-3">

@@ -113,11 +113,6 @@ const spendConversionDataSets: Record<string, { labels: string[]; datasets: { la
   },
 };
 
-const zeitraumOptions = [
-  { value: '7', label: 'Letzte 7 Tage' },
-  { value: '30', label: 'Letzte 30 Tage' },
-];
-
 const kalenderEvents = [
   {
     woche: 'KW 24',
@@ -152,7 +147,6 @@ function shareholderName(name: string) {
 
 export default function DashboardDetail({ concert, modus = 'gesamt', updateConcertName }: DashboardDetailProps) {
   const router = useRouter();
-  const [zeitraum, setZeitraum] = useState('7');
   const [showKosten, setShowKosten] = useState(false);
   const [kuenstler, setKuenstler] = useState(1000);
   const [location, setLocation] = useState(5000);
@@ -374,27 +368,15 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
           <div className="bg-gray-100 rounded-lg p-4 shadow flex-1 flex flex-col justify-between min-h-[170px] w-full">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-lg font-semibold">Spend / Conversion</h2>
-              <select
-                className="bg-gray-200 text-gray-900 rounded px-2 py-1 text-sm border border-gray-300 focus:outline-none"
-                value={zeitraum}
-                onChange={e => setZeitraum(e.target.value)}
-              >
-                {zeitraumOptions.map(opt => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
             </div>
             <div className="h-40">
               <Line data={{
-                ...spendConversionDataSets[zeitraum],
-                datasets: spendConversionDataSets[zeitraum].datasets.map(ds => ({
+                ...spendConversionDataSets['7'],
+                datasets: spendConversionDataSets['7'].datasets.map(ds => ({
                   ...ds,
                   data: Array(10).fill(64),
                 })),
               }} options={chartOptionsWhite} />
-            </div>
-            <div className="mt-1 text-gray-500 text-xs">
-              Zeitraum: {zeitraumOptions.find(opt => opt.value === zeitraum)?.label}
             </div>
           </div>
           {/* Umsatz-Box */}

@@ -193,7 +193,7 @@ export default function Konzertplanung() {
               <h2 className="text-xl font-bold text-gray-800">Deutschlandkarte</h2>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
                 <div className="flex items-center gap-2">
-                  <FunnelIcon className="w-4 h-4 text-gray-400" />
+                  <FunnelIcon className="w-4 h-4 text-gray-800" />
                   <select
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value)}
@@ -206,7 +206,7 @@ export default function Konzertplanung() {
                   </select>
                 </div>
                 <div className="flex items-center gap-2">
-                  <MagnifyingGlassIcon className="w-4 h-4 text-gray-400" />
+                  <MagnifyingGlassIcon className="w-4 h-4 text-gray-800" />
                   <input
                     type="text"
                     placeholder="Stadt suchen..."
@@ -221,7 +221,7 @@ export default function Konzertplanung() {
             {/* Vereinfachte Deutschlandkarte mit Pins */}
             <div className="relative bg-gray-100 rounded-2xl h-full overflow-hidden">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-gray-400 text-lg font-semibold">Deutschlandkarte</div>
+                <div className="text-gray-800 text-lg font-semibold">Deutschlandkarte</div>
               </div>
               
               {/* Konzert-Pins */}
@@ -269,7 +269,7 @@ export default function Konzertplanung() {
                     {getStatusLabel(concert.status)}
                   </span>
                 </div>
-                <div className="text-xs text-gray-500 space-y-1">
+                <div className="text-xs text-gray-800 space-y-1">
                   <div className="flex items-center gap-1">
                     <MapPinIcon className="w-3 h-3 flex-shrink-0" />
                     <span className="truncate">{concert.city} • {concert.venue}</span>
@@ -293,7 +293,7 @@ export default function Konzertplanung() {
             <div className="lg:hidden mb-4">
               <button
                 onClick={() => setSelectedConcert(null)}
-                className="text-gray-500 hover:text-gray-700 text-sm font-semibold"
+                className="text-gray-800 hover:text-gray-900 text-sm font-semibold"
               >
                 ← Zurück zur Liste
               </button>
@@ -310,7 +310,7 @@ export default function Konzertplanung() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Titel</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Titel</label>
                 <input
                   type="text"
                   value={selectedConcert.title}
@@ -320,7 +320,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Stadt</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Stadt</label>
                 <input
                   type="text"
                   value={selectedConcert.city}
@@ -330,7 +330,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Venue</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Venue</label>
                 <input
                   type="text"
                   value={selectedConcert.venue}
@@ -340,7 +340,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Datum</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Datum</label>
                 <input
                   type="date"
                   value={selectedConcert.date}
@@ -350,7 +350,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Status</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Status</label>
                 <select
                   value={selectedConcert.status}
                   onChange={(e) => updateConcert(selectedConcert.id, { status: e.target.value as any })}
@@ -363,7 +363,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Tickets (Gesamt)</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Tickets (Gesamt)</label>
                 <input
                   type="number"
                   value={selectedConcert.tickets}
@@ -373,7 +373,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Verkauft</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Verkauft</label>
                 <input
                   type="number"
                   value={selectedConcert.sold}
@@ -383,7 +383,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Budget (€)</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Budget (€)</label>
                 <input
                   type="number"
                   value={selectedConcert.budget}
@@ -395,19 +395,19 @@ export default function Konzertplanung() {
               {/* Kennzahlen */}
               <div className="bg-gray-50 rounded-xl p-4 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Auslastung:</span>
+                  <span className="text-gray-800">Auslastung:</span>
                   <span className="font-semibold text-gray-800">
                     {selectedConcert.tickets > 0 ? Math.round((selectedConcert.sold / selectedConcert.tickets) * 100) : 0}%
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Verbleibend:</span>
+                  <span className="text-gray-800">Verbleibend:</span>
                   <span className="font-semibold text-gray-800">
                     {selectedConcert.tickets - selectedConcert.sold} Tickets
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Ticketpreis Ø:</span>
+                  <span className="text-gray-800">Ticketpreis Ø:</span>
                   <span className="font-semibold text-gray-800">
                     {selectedConcert.tickets > 0 ? Math.round(selectedConcert.budget / selectedConcert.tickets) : 0}€
                   </span>
@@ -426,7 +426,7 @@ export default function Konzertplanung() {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Titel</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Titel</label>
                 <input
                   type="text"
                   value={newConcert.title}
@@ -437,7 +437,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Stadt</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Stadt</label>
                 <input
                   type="text"
                   value={newConcert.city}
@@ -448,7 +448,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Venue</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Venue</label>
                 <input
                   type="text"
                   value={newConcert.venue}
@@ -459,7 +459,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Datum</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Datum</label>
                 <input
                   type="date"
                   value={newConcert.date}
@@ -469,7 +469,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Tickets</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Tickets</label>
                 <input
                   type="number"
                   value={newConcert.tickets}
@@ -480,7 +480,7 @@ export default function Konzertplanung() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Budget (€)</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-1">Budget (€)</label>
                 <input
                   type="number"
                   value={newConcert.budget}
@@ -494,7 +494,7 @@ export default function Konzertplanung() {
             <div className="flex gap-3 mt-6">
               <button
                 onClick={() => setShowAddForm(false)}
-                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200"
+                className="flex-1 px-4 py-2 bg-gray-100 text-gray-800 rounded-xl font-semibold hover:bg-gray-200"
               >
                 Abbrechen
               </button>

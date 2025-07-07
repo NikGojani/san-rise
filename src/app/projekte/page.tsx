@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { PlusIcon, BellIcon, UserCircleIcon, MagnifyingGlassIcon, PlayIcon, PauseIcon, StopIcon, TrashIcon } from "@heroicons/react/24/outline";
+import Sidebar from "../Sidebar";
 
 interface Task {
   id: number;
@@ -45,7 +46,7 @@ const columns = [
   { key: "done", label: "Done" },
 ];
 
-export default function Projekte() {
+export default function Aufgaben() {
   const [tasks, setTasks] = useState<any[]>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('tasks');
@@ -70,20 +71,11 @@ export default function Projekte() {
 
   return (
     <div className="min-h-screen flex bg-gray-50">
-      {/* Seitenleiste */}
-      <aside className="w-20 sm:w-24 bg-white border-r border-gray-100 flex flex-col items-center py-6 gap-8 shadow-sm">
-        <img src="/WhatsApp%20Image%202025-07-05%20at%2004.18.38.jpeg" alt="Logo" className="w-10 h-10 rounded-xl mb-4" style={{ filter: 'invert(1)' }} />
-        <nav className="flex flex-col gap-8 items-center w-full">
-          <SidebarIcon active label="Projekte" />
-          <SidebarIcon label="Aufgaben" />
-          <SidebarIcon label="Kalender" />
-        </nav>
-      </aside>
-      {/* Hauptbereich */}
+      <Sidebar />
       <main className="flex-1 flex flex-col min-h-screen">
         {/* Topbar */}
         <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-white border-b border-gray-100 shadow-sm" style={{borderRadius: '18px 18px 0 0', boxShadow: '0 2px 12px rgba(0,0,0,0.07)', marginBottom: '1.5rem', marginTop: '1.5rem'}}>
-          <h1 className="text-2xl font-bold text-gray-800" style={{letterSpacing: '-0.01em'}}>Projekte</h1>
+          <h1 className="text-2xl font-bold text-gray-800" style={{letterSpacing: '-0.01em'}}>Aufgaben</h1>
           <div className="flex items-center gap-4">
             <BellIcon className="w-6 h-6 text-gray-400" />
             <UserCircleIcon className="w-8 h-8 text-gray-400" />

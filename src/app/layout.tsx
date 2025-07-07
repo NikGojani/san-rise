@@ -35,12 +35,9 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="SAN RISE" />
       </head>
       <body className={inter.className}>
-        <div style={{ display: 'flex', minHeight: '100vh', background: '#fafafc' }}>
-          <Sidebar />
-          <div style={{ flex: 1, maxWidth: '100vw', overflowX: 'auto' }}>
-            <Header />
-            {children}
-          </div>
+        <Header />
+        <div style={{ flex: 1, maxWidth: '100vw', overflowX: 'auto', paddingTop: '72px' }}>
+          {children}
         </div>
       </body>
     </html>

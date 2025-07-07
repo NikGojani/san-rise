@@ -4,10 +4,8 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 
 const pages = [
-  { href: "/aufgaben", label: "Aufgaben" },
   { href: "/kosten", label: "Kostenrechner" },
   { href: "/vergleich", label: "Vergleichsrechner" },
-  { href: "/projekte", label: "Projektmanagement" },
   { href: "/konzertplanung", label: "Konzertplanung" },
 ];
 
@@ -58,7 +56,7 @@ export default function Home() {
           <form onSubmit={handleLogin} className="flex flex-col gap-4 w-full bg-gray-50 rounded-2xl shadow p-6">
             <h2 className="text-2xl font-bold text-center mb-2">Login</h2>
             <input
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-lg focus:ring-2 focus:ring-blue-400"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-900 focus:ring-2 focus:ring-blue-400"
               placeholder="Name (Nik, Peen, Stury, Adrian)"
               value={account}
               onChange={e => setAccount(e.target.value)}
@@ -66,7 +64,7 @@ export default function Home() {
             />
             <input
               type="password"
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-lg focus:ring-2 focus:ring-blue-400"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-900 focus:ring-2 focus:ring-blue-400"
               placeholder="Passwort"
               value={password}
               onChange={e => setPassword(e.target.value)}
