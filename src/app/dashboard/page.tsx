@@ -312,8 +312,10 @@ function DashboardOverviewInner() {
   );
 }
 
-export default function DashboardRedirect() {
-  const router = useRouter();
-  useEffect(() => { router.replace("/aufgaben"); }, [router]);
-  return <div className="p-8 text-center text-gray-500">Diese Seite ist umgezogen. Du wirst weitergeleitet...</div>;
+export default function DashboardPage() {
+  return (
+    <ConcertsProvider>
+      <DashboardOverviewInner />
+    </ConcertsProvider>
+  );
 }

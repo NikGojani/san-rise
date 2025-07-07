@@ -1,13 +1,7 @@
 "use client";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
-
-const pages = [
-  { href: "/kosten", label: "Kostenrechner" },
-  { href: "/vergleich", label: "Vergleichsrechner" },
-  { href: "/konzertplanung", label: "Konzertplanung" },
-];
 
 const allowedUsers = ["Nik", "Peen", "Stury", "Adrian"];
 const PASSWORD = "wirwollengeld";
@@ -43,13 +37,14 @@ export default function Home() {
 
   if (!loggedIn) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4 py-10 font-[system-ui,sans-serif]">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4 py-10 font-[system-ui,sans-serif]"
+        style={{ minHeight: '100vh', justifyContent: 'flex-start', paddingTop: '12vh' }}>
         <div className="flex flex-col items-center gap-6 w-full max-w-xs">
           <Image
             src="/WhatsApp%20Image%202025-07-05%20at%2004.18.38.jpeg"
             alt="SAN RISE Logo"
-            width={120}
-            height={120}
+            width={144}
+            height={144}
             className="rounded-2xl shadow-lg mb-2"
             style={{ filter: 'invert(1)' }}
           />
@@ -57,18 +52,28 @@ export default function Home() {
             <h2 className="text-2xl font-bold text-center mb-2">Login</h2>
             <input
               className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-900 focus:ring-2 focus:ring-blue-400"
-              placeholder="Name (Nik, Peen, Stury, Adrian)"
+              placeholder="Name"
               value={account}
               onChange={e => setAccount(e.target.value)}
               autoComplete="username"
             />
             <input
-              type="password"
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-900 focus:ring-2 focus:ring-blue-400"
+              type="text"
+              inputMode="text"
+              className={`w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-900 focus:ring-2 focus:ring-blue-400 ${password.length > 0 ? 'tracking-widest text-2xl font-bold' : ''}`}
               placeholder="Passwort"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              value={password.length > 0 ? "*".repeat(password.length) : ""}
+              onChange={e => {
+                const input = e.target.value;
+                if (input.length < password.length) {
+                  setPassword(password.slice(0, input.length));
+                } else {
+                  const native = e.nativeEvent as InputEvent;
+                  setPassword(password + (native.data || ""));
+                }
+              }}
               autoComplete="current-password"
+              style={password.length > 0 ? { letterSpacing: '0.2em' } : {}}
             />
             {error && <div className="text-red-500 text-sm text-center">{error}</div>}
             <button
@@ -84,26 +89,38 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4 py-10 font-[system-ui,sans-serif]">
-      <div className="flex flex-col items-center gap-6 w-full max-w-xs">
+    <div className="h-screen flex flex-col items-center justify-center bg-white px-4 font-[system-ui,sans-serif] overflow-hidden">
+      <div className="flex flex-col items-center gap-4 w-full max-w-3xl" style={{ justifyContent: 'flex-start' }}>
         <Image
           src="/WhatsApp%20Image%202025-07-05%20at%2004.18.38.jpeg"
           alt="SAN RISE Logo"
-          width={120}
-          height={120}
+          width={144}
+          height={144}
           className="rounded-2xl shadow-lg mb-2"
           style={{ filter: 'invert(1)' }}
         />
-        <div className="flex flex-col gap-4 w-full mt-4">
-          {pages.map((page) => (
-            <Link
-              key={page.href}
-              href={page.href}
-              className="w-full py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-900 text-lg font-semibold text-center shadow transition-all border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              {page.label}
-            </Link>
-          ))}
+        <div className="grid grid-cols-3 gap-8 w-full mt-2" style={{ alignItems: 'center' }}>
+          <Link
+            href="/projektmanagement"
+            className="flex items-center justify-center aspect-[2/1.2] w-full rounded-2xl shadow border border-gray-200 bg-gray-100 hover:bg-gray-200 transition-all text-xl font-semibold text-gray-900 px-4 py-8"
+            style={{ minHeight: 80, maxHeight: 120 }}
+          >
+            <span className="text-center w-full">Projektmanagement</span>
+          </Link>
+          <Link
+            href="/dashboard"
+            className="flex items-center justify-center aspect-[2/1.2] w-full rounded-2xl shadow border border-gray-200 bg-gray-100 hover:bg-gray-200 transition-all text-xl font-semibold text-gray-900 px-4 py-8"
+            style={{ minHeight: 80, maxHeight: 120 }}
+          >
+            <span className="text-center w-full">Dashboard</span>
+          </Link>
+          <Link
+            href="/kosten"
+            className="flex items-center justify-center aspect-[2/1.2] w-full rounded-2xl shadow border border-gray-200 bg-gray-100 hover:bg-gray-200 transition-all text-xl font-semibold text-gray-900 px-4 py-8"
+            style={{ minHeight: 80, maxHeight: 120 }}
+          >
+            <span className="text-center w-full">Kosten</span>
+          </Link>
         </div>
       </div>
     </div>

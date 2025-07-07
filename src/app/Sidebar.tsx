@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  { name: "Projektmanagement", path: "/aufgaben", icon: "P" },
-  { name: "Aufgaben", path: "/projekte", icon: "A" },
+  { name: "Projektmanagement", path: "/projektmanagement", icon: "P" },
+  { name: "Projekte", path: "/projekte", icon: "A" },
   { name: "Kalender", path: "/kalender", icon: "K" },
 ];
 
