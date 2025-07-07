@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Line, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -312,10 +312,8 @@ function DashboardOverviewInner() {
   );
 }
 
-export default function DashboardOverview() {
-  return (
-    <ConcertsProvider>
-      <DashboardOverviewInner />
-    </ConcertsProvider>
-  );
+export default function DashboardRedirect() {
+  const router = useRouter();
+  useEffect(() => { router.replace("/aufgaben"); }, [router]);
+  return <div className="p-8 text-center text-gray-500">Diese Seite ist umgezogen. Du wirst weitergeleitet...</div>;
 }

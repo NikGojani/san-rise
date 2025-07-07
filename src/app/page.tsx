@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 
 const pages = [
-  { href: "/dashboard", label: "Dashboard" },
+  { href: "/aufgaben", label: "Aufgaben" },
   { href: "/kosten", label: "Kostenrechner" },
   { href: "/vergleich", label: "Vergleichsrechner" },
   { href: "/projekte", label: "Projektmanagement" },
