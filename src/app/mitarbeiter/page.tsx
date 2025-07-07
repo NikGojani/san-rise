@@ -100,6 +100,11 @@ export default function MitarbeiterSeite() {
     return total + brutto + lohnnebenkosten;
   }, 0);
 
+  // Avatar-Helper für Initialen
+  function getInitialen(name: string) {
+    return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+  }
+
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-start py-12 px-2 font-[system-ui,sans-serif]">
       <h1 className="text-3xl font-bold mb-8 text-gray-900 tracking-tight">Mitarbeiter</h1>
@@ -194,26 +199,41 @@ export default function MitarbeiterSeite() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {mitarbeiter.map(m => {
             const brutto = parseFloat(m.brutto) || 0;
-            const lohnnebenkosten = brutto * 0.22; // 22% Lohnnebenkosten
+            const lohnnebenkosten = brutto * 0.22;
             const kosten = brutto + lohnnebenkosten;
-            const netto = m.netto ? parseFloat(m.netto) : Math.round(brutto * 0.62 * 100) / 100; // Dummy-Rechnung
+            const netto = m.netto ? parseFloat(m.netto) : Math.round(brutto * 0.62 * 100) / 100;
             return (
-              <div key={m.id} className="bg-white rounded-2xl shadow-xl p-6 flex flex-col gap-2 border border-gray-100 relative">
-                <div className="absolute right-4 top-4 flex gap-2">
-                  <button className="text-gray-400 hover:text-blue-500" title="Bearbeiten" onClick={() => setEdit(m)}>
-                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M16.862 5.487a2.06 2.06 0 1 1 2.915 2.914l-9.193 9.193a2 2 0 0 1-.707.464l-3.11 1.037a.5.5 0 0 1-.633-.633l1.037-3.11a2 2 0 0 1 .464-.707l9.193-9.193Z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </button>
-                  <button className="text-gray-300 hover:text-red-500" title="Löschen" onClick={() => handleDelete(m.id)}>
-                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M6 7h12M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7h12zM10 11v6m4-6v6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </button>
+              <div key={m.id} className="bg-white rounded-2xl shadow-xl p-6 flex flex-col gap-3 border border-gray-100 relative transition hover:shadow-2xl hover:-translate-y-1">
+                <div className="flex items-center gap-4 mb-2">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-100 to-blue-300 flex items-center justify-center text-2xl font-bold text-blue-700 shadow-inner border border-blue-200">
+                    {getInitialen(m.name)}
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-lg font-bold text-gray-900 mb-0.5">{m.name}</div>
+                    <div className="text-gray-500 text-sm">{m.position}</div>
+                  </div>
+                  <div className="flex flex-col gap-1 items-end">
+                    <button className="text-gray-400 hover:text-blue-500 p-1" title="Bearbeiten" onClick={() => setEdit(m)}>
+                      <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M16.862 5.487a2.06 2.06 0 1 1 2.915 2.914l-9.193 9.193a2 2 0 0 1-.707.464l-3.11 1.037a.5.5 0 0 1-.633-.633l1.037-3.11a2 2 0 0 1 .464-.707l9.193-9.193Z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </button>
+                    <button className="text-gray-300 hover:text-red-500 p-1" title="Löschen" onClick={() => handleDelete(m.id)}>
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M6 7h12M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7h12zM10 11v6m4-6v6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </button>
+                  </div>
                 </div>
-                <div className="text-lg font-bold text-gray-900 mb-1">{m.name}</div>
-                <div className="text-gray-700 text-sm mb-1">Geburtsdatum: {m.geburtsdatum}</div>
-                <div className="text-gray-700 text-sm mb-1">Adresse: {m.adresse}</div>
-                <div className="text-gray-700 text-sm mb-1">Einstellungsdatum: {m.einstellungsdatum}</div>
-                <div className="text-gray-700 text-sm mb-1">Position: {m.position}</div>
+                <div className="flex flex-wrap gap-4 text-sm text-gray-700 mb-2">
+                  <div><span className="font-semibold">Geburtsdatum:</span> {m.geburtsdatum}</div>
+                  <div><span className="font-semibold">Adresse:</span> {m.adresse}</div>
+                  <div><span className="font-semibold">Einstellungsdatum:</span> {m.einstellungsdatum}</div>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mt-2">
+                  <div className="text-gray-700 text-sm">Bruttogehalt: <span className="font-semibold">{brutto.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span></div>
+                  <div className="text-gray-700 text-sm">Lohnnebenkosten (22%): <span className="font-semibold">{lohnnebenkosten.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span></div>
+                  <div className="text-gray-900 font-bold text-lg">Monatliche Kosten: {kosten.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</div>
+                </div>
+                <div className="mt-2 text-blue-700 font-bold text-base">Nettogehalt: {netto.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</div>
                 {anhang[m.id] && (
-                  <div className="flex items-center gap-2 mt-1">
+                  <div className="flex items-center gap-2 mt-2">
                     <a href={anhang[m.id].data} download={anhang[m.id].name} className="text-blue-500 underline text-xs hover:text-blue-700" title={anhang[m.id].name}>Arbeitsvertrag</a>
                     <button className="text-gray-300 hover:text-red-500 p-1" title="Anhang entfernen" onClick={() => {
                       setAnhang(a => { const b = { ...a }; delete b[m.id]; return b; });
@@ -222,12 +242,6 @@ export default function MitarbeiterSeite() {
                     </button>
                   </div>
                 )}
-                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mt-2">
-                  <div className="text-gray-700 text-sm">Bruttogehalt: <span className="font-semibold">{brutto.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span></div>
-                  <div className="text-gray-700 text-sm">Lohnnebenkosten (22%): <span className="font-semibold">{lohnnebenkosten.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span></div>
-                  <div className="text-gray-900 font-bold text-lg">Monatliche Kosten: {kosten.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</div>
-                </div>
-                <div className="mt-2 text-blue-700 font-bold text-base">Nettogehalt: {netto.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</div>
               </div>
             );
           })}
