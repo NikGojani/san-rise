@@ -65,13 +65,14 @@ export default function KostenSeite() {
     return () => window.removeEventListener('storage', handler);
   }, []);
 
-  // Pie-Chart Daten: Nur Gesamtsumme Vertragskosten und Gesamtsumme Mitarbeiterkosten
+  // Corporate Cost = Summe aller Mitarbeiterkosten (bereits als mitarbeiterkosten berechnet)
+  const corporateCost = mitarbeiterkosten;
   const vertragskostenSumme = vertragsdaten.reduce((sum, p) => sum + (p.intervall === 'monatlich' ? p.betrag : p.betrag / 12), 0);
   const pieData = {
-    labels: ['Vertragskosten', 'Mitarbeiterkosten'],
+    labels: ['Vertragskosten', 'Corporate Cost'],
     datasets: [
       {
-        data: [vertragskostenSumme, mitarbeiterkosten],
+        data: [vertragskostenSumme, corporateCost],
         backgroundColor: ['#34C759', '#007AFF'],
         borderWidth: 2,
       },
@@ -100,7 +101,7 @@ export default function KostenSeite() {
   });
   const gesamt6Monate = kostenMonate.reduce((sum, k) => sum + k.vertragskosten + k.mitarbeiterkosten, 0);
 
-  const monatlicheGesamtsumme = vertragskostenSumme + mitarbeiterkosten;
+  const monatlicheGesamtsumme = vertragskostenSumme + corporateCost;
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-start py-6 px-1 font-[system-ui,sans-serif]">

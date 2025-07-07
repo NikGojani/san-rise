@@ -94,7 +94,8 @@ export default function KostenTool() {
   const gema = Math.round(umsatz * 0.09 * 100) / 100;
   const shopifyFee = Math.round((umsatz * 0.019 + verkauft * 0.25) * 100) / 100;
   const shopifyActive = data.optionalTicketing <= 0;
-  const kosten = gema + data.marketing + data.kuenstler + data.location + data.mercher + data.reise + (shopifyActive ? shopifyFee : 0) + (vertragskosten ?? 0);
+  const corporateCost = mitarbeiterkosten;
+  const kosten = gema + data.marketing + data.kuenstler + data.location + data.mercher + data.reise + (shopifyActive ? shopifyFee : 0) + (vertragskosten ?? 0) + corporateCost;
   const gewinn = umsatz - kosten;
   const kostenOpt = kosten + data.optionalAufbau + data.optionalVariabel + data.optionalTicketing;
   const gewinnOpt = umsatz - kostenOpt;
@@ -102,20 +103,20 @@ export default function KostenTool() {
   // NEUE Monatsgewinn-Berechnung NUR mit den gewünschten Posten
   const monatGewinnBasis = (vertragskosten !== null)
     ? (2 * gewinn)
-      - (showCorporate ? mitarbeiterkosten : 0)
+      - (showCorporate ? corporateCost : 0)
       - (showVertragskosten ? (vertragskosten ?? 0) : 0)
       - data.steuer
-    : (2 * gewinn) - (showCorporate ? mitarbeiterkosten : 0) - data.steuer;
+    : (2 * gewinn) - (showCorporate ? corporateCost : 0) - data.steuer;
   const steuernAbzugKlar = data.steuerProzent ? (monatGewinnBasis * (data.steuerProzent / 100)) : 0;
   const monatGewinnKlar = monatGewinnBasis - steuernAbzugKlar;
 
   // Monat/Jahr
   const monatUmsatz = 2 * gewinn;
-  const monatGewinnVorSteuern = monatUmsatz - mitarbeiterkosten - data.steuer;
+  const monatGewinnVorSteuern = monatUmsatz - corporateCost - data.steuer;
   const steuernAbzug = data.steuerProzent ? (monatGewinnVorSteuern * (data.steuerProzent / 100)) : 0;
   const monatGewinn = monatGewinnVorSteuern - steuernAbzug;
   const monatUmsatzOpt = 2 * gewinnOpt;
-  const monatGewinnOptVorSteuern = monatUmsatzOpt - (optionalCorporate ?? mitarbeiterkosten) - (optionalSteuer ?? data.steuer);
+  const monatGewinnOptVorSteuern = monatUmsatzOpt - (optionalCorporate ?? corporateCost) - (optionalSteuer ?? data.steuer);
   const steuernAbzugOpt = data.steuerProzent ? (monatGewinnOptVorSteuern * (data.steuerProzent / 100)) : 0;
   const monatGewinnOptMitSteuern = monatGewinnOptVorSteuern - steuernAbzugOpt;
   const monatGewinnOpt = monatGewinnOptVorSteuern - steuernAbzugOpt;
@@ -300,7 +301,7 @@ export default function KostenTool() {
                 </a>
               </label>
               <div className="flex items-center gap-0">
-                <span className="w-24 text-right font-mono text-gray-900">{mitarbeiterkosten.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</span>
+                <span className="w-24 text-right font-mono text-gray-900">{formatCurrency(corporateCost)}</span>
               </div>
             </div>
             <div className={`flex items-center justify-between gap-2 ${!showVertragskosten ? 'text-gray-300' : ''}`}>
