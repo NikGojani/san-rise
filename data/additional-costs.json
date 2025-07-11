@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "name": "Sprinter Kauf",
+    "amount": 10000,
+    "category": "Fahrzeuge",
+    "type": "one-time",
+    "date": "2024-01-15",
+    "description": "Neuer Transporter für Equipment",
+    "attachments": []
+  }
+]

@@ -1,0 +1,177 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    /* White Mode - Professional & Elegant Color Scheme */
+    --background: 0 0% 100%;               /* White: #FFFFFF */
+    --foreground: 0 0% 13%;                /* Anthracite text: #222222 */
+    --card: 0 0% 96%;                      /* Very light gray cards: #F5F5F5 */
+    --card-foreground: 0 0% 13%;           /* Anthracite text: #222222 */
+    --popover: 0 0% 96%;                   /* Very light gray: #F5F5F5 */
+    --popover-foreground: 0 0% 13%;        /* Anthracite text: #222222 */
+    --primary: 33 66% 40%;                 /* Warm earthy gold: #A86B22 */
+    --primary-foreground: 0 0% 100%;       /* White text on gold */
+    --secondary: 0 0% 96%;                 /* Very light gray: #F5F5F5 */
+    --secondary-foreground: 0 0% 33%;      /* Darker gray: #555555 */
+    --muted: 0 0% 96%;                     /* Very light gray: #F5F5F5 */
+    --muted-foreground: 0 0% 33%;          /* Darker gray: #555555 */
+    --accent: 0 0% 96%;                    /* Very light gray: #F5F5F5 */
+    --accent-foreground: 0 0% 13%;         /* Anthracite text: #222222 */
+    --destructive: 17 50% 52%;             /* Terracotta: #C26B48 */
+    --destructive-foreground: 0 0% 100%;   /* White text on terracotta */
+    --border: 0 0% 80%;                    /* Soft gray borders: #CCCCCC */
+    --input: 0 0% 96%;                     /* Very light gray inputs: #F5F5F5 */
+    --ring: 33 66% 40%;                    /* Warm earthy gold focus: #A86B22 */
+    
+    /* Chart colors for White Mode */
+    --chart-1: 42 58% 78%;                 /* Warm beige main segment: #E6CDA5 */
+    --chart-2: 82 26% 58%;                 /* Olive second segment: #9BAE7A */
+    --chart-3: 0 0% 82%;                   /* Light gray third segment: #D0D0D0 */
+    --chart-4: 17 50% 52%;                 /* Terracotta: #C26B48 */
+    --chart-5: 33 66% 40%;                 /* Warm earthy gold: #A86B22 */
+    
+    /* Semantic colors for White Mode */
+    --positive: 82 26% 45%;                /* Dark green for success: #6A8E5A */
+    --positive-foreground: 0 0% 100%;      /* White text on dark green */
+    --negative: 17 50% 52%;                /* Terracotta for costs: #C26B48 */
+    --negative-foreground: 0 0% 100%;      /* White text on terracotta */
+    --neutral: 0 0% 80%;                   /* Soft gray for neutral: #CCCCCC */
+    --neutral-foreground: 0 0% 13%;        /* Anthracite text on neutral */
+    
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 100%;       /* White sidebar */
+    --sidebar-foreground: 0 0% 13%;        /* Anthracite text: #222222 */
+    --sidebar-primary: 33 66% 40%;         /* Warm earthy gold: #A86B22 */
+    --sidebar-primary-foreground: 0 0% 100%; /* White text on gold */
+    --sidebar-accent: 0 0% 96%;            /* Very light gray: #F5F5F5 */
+    --sidebar-accent-foreground: 0 0% 13%; /* Anthracite text: #222222 */
+    --sidebar-border: 0 0% 80%;            /* Soft gray borders: #CCCCCC */
+    --sidebar-ring: 33 66% 40%;            /* Warm earthy gold: #A86B22 */
+  }
+  .dark {
+    /* Dark Mode - Premium & Sophisticated Color Scheme */
+    /* Ultra-dark elegant surfaces */
+    --background: 0 0% 5%;                 /* Very dark gray: #0D0D0D */
+    --foreground: 0 0% 94%;                /* Warm white text: #F0F0F0 */
+    
+    /* Elevated card surfaces in anthracite */
+    --card: 0 0% 12%;                      /* Anthracite cards: #1E1E1E */
+    --card-foreground: 0 0% 94%;           /* Warm white text: #F0F0F0 */
+    
+    /* Popover surfaces matching cards */
+    --popover: 0 0% 12%;                   /* Anthracite: #1E1E1E */
+    --popover-foreground: 0 0% 94%;        /* Warm white text: #F0F0F0 */
+    
+    /* Primary gold accent (consistent across modes) */
+    --primary: 33 66% 40%;                 /* Warm earthy gold: #A86B22 */
+    --primary-foreground: 0 0% 100%;       /* White text on gold */
+    
+    /* Secondary surfaces in anthracite */
+    --secondary: 0 0% 12%;                 /* Anthracite: #1E1E1E */
+    --secondary-foreground: 0 0% 69%;      /* Subtle light gray: #B0B0B0 */
+    
+    /* Muted elements in anthracite tones */
+    --muted: 0 0% 12%;                     /* Anthracite: #1E1E1E */
+    --muted-foreground: 0 0% 69%;          /* Subtle light gray: #B0B0B0 */
+    
+    /* Accent surfaces */
+    --accent: 0 0% 12%;                    /* Anthracite: #1E1E1E */
+    --accent-foreground: 0 0% 94%;         /* Warm white text: #F0F0F0 */
+    
+    /* Destructive states in clay */
+    --destructive: 17 50% 52%;             /* Clay for errors: #C26B48 */
+    --destructive-foreground: 0 0% 100%;   /* White text on clay */
+    
+    /* Neutral borders and inputs */
+    --border: 0 0% 33%;                    /* Medium gray borders: #555555 */
+    --input: 0 0% 12%;                     /* Anthracite inputs: #1E1E1E */
+    --ring: 33 66% 40%;                    /* Warm earthy gold focus: #A86B22 */
+    
+    /* Sophisticated chart palette for Dark Mode */
+    --chart-1: 33 58% 64%;                 /* Sand main segment: #D7A86E */
+    --chart-2: 82 26% 58%;                 /* Olive second segment: #9BAE7A */
+    --chart-3: 0 0% 33%;                   /* Anthracite third segment: #555555 */
+    --chart-4: 17 50% 52%;                 /* Clay: #C26B48 */
+    --chart-5: 33 66% 40%;                 /* Warm earthy gold: #A86B22 */
+    
+    /* Semantic colors for Dark Mode */
+    --positive: 82 26% 58%;                /* Olive for success: #9BAE7A */
+    --positive-foreground: 0 0% 100%;      /* White text on olive */
+    --negative: 17 50% 52%;                /* Clay for costs/losses: #C26B48 */
+    --negative-foreground: 0 0% 100%;      /* White text on clay */
+    --neutral: 0 0% 33%;                   /* Medium gray for neutral: #555555 */
+    --neutral-foreground: 0 0% 94%;        /* Warm white text on neutral */
+    
+    /* Premium dark sidebar */
+    --sidebar-background: 0 0% 5%;         /* Very dark gray: #0D0D0D */
+    --sidebar-foreground: 0 0% 94%;        /* Warm white text: #F0F0F0 */
+    --sidebar-primary: 33 66% 40%;         /* Warm earthy gold: #A86B22 */
+    --sidebar-primary-foreground: 0 0% 100%; /* White text on gold */
+    --sidebar-accent: 0 0% 12%;            /* Anthracite: #1E1E1E */
+    --sidebar-accent-foreground: 0 0% 94%; /* Warm white text: #F0F0F0 */
+    --sidebar-border: 0 0% 33%;            /* Medium gray borders: #555555 */
+    --sidebar-ring: 33 66% 40%;            /* Warm earthy gold: #A86B22 */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Smooth transitions for theme switching */
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@layer components {
+  .priority-badge {
+    @apply px-2 py-1 rounded-full text-xs font-medium;
+  }
+  .priority-low {
+    @apply bg-positive/20 text-positive border border-positive/30;
+  }
+  .priority-medium {
+    @apply bg-primary/20 text-primary border border-primary/30;
+  }
+  .priority-high {
+    @apply bg-negative/20 text-negative border border-negative/30;
+  }
+  
+  /* Enhanced button styles for dark theme */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 
+           shadow-lg shadow-primary/20 transition-all duration-200;
+  }
+  
+  /* Card enhancements with subtle glow */
+  .card-enhanced {
+    @apply bg-card border border-border/50 shadow-xl 
+           backdrop-blur-sm transition-all duration-200;
+  }
+  
+  .card-enhanced:hover {
+    @apply border-border shadow-2xl shadow-primary/5;
+  }
+  
+  /* Input field enhancements */
+  .input-enhanced {
+    @apply bg-input border border-border text-foreground 
+           placeholder:text-muted-foreground
+           focus:border-ring focus:ring-1 focus:ring-ring
+           transition-all duration-200;
+  }
+}

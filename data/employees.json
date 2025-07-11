@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1",
+    "name": "Adrian Schmidt",
+    "role": "Frontend Developer",
+    "grossSalary": 4500,
+    "netSalary": 2800,
+    "additionalCostsPercentage": 30,
+    "address": "Musterstraße 123, 12345 Berlin",
+    "startDate": "2023-01-15",
+    "email": "adrian@company.com",
+    "phone": "+49 123 456789",
+    "isActive": false,
+    "files": []
+  },
+  {
+    "id": "2",
+    "name": "Nik Weber",
+    "role": "Marketing Manager",
+    "grossSalary": 2200,
+    "netSalary": 1600,
+    "additionalCostsPercentage": 22,
+    "address": "Beispielweg 456, 54321 Hamburg",
+    "startDate": "2023-03-01",
+    "email": "nik@company.com",
+    "phone": "+49 987 654321",
+    "isActive": true,
+    "files": []
+  },
+  {
+    "id": "3",
+    "name": "Sebastian Müller",
+    "role": "Event Coordinator",
+    "grossSalary": 3800,
+    "netSalary": 2400,
+    "additionalCostsPercentage": 30,
+    "address": "Teststraße 789, 98765 München",
+    "startDate": "2023-06-01",
+    "email": "sebastian@company.com",
+    "phone": "+49 555 123456",
+    "isActive": false,
+    "files": []
+  }
+]
