@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { DashboardStats } from "@/components/dashboard-stats"
 import { CostChart } from "@/components/cost-chart"
 import { CostManagement } from "@/components/cost-management"
