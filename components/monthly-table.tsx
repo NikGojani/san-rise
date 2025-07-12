@@ -89,10 +89,50 @@ export function MonthlyTable() {
     }
 
     loadData()
+    
+    // Event-Listener für Updates von anderen Komponenten
+    const handleCostsUpdated = () => {
+      refreshData()
+    }
+    
+    window.addEventListener('additional-costs-updated', handleCostsUpdated)
+    
+    return () => {
+      window.removeEventListener('additional-costs-updated', handleCostsUpdated)
+    }
   }, [])
+
+  const refreshData = async () => {
+    try {
+      // Lade zusätzliche Kosten
+      const additionalCostsResponse = await fetch('/api/additional-costs')
+      if (additionalCostsResponse.ok) {
+        const additionalCostsData = await additionalCostsResponse.json()
+        setAdditionalCosts(additionalCostsData)
+      }
+
+      // Lade Vertragskosten
+      const contractsResponse = await fetch('/api/contracts')
+      if (contractsResponse.ok) {
+        const contractsData = await contractsResponse.json()
+        setContracts(contractsData)
+      }
+
+      // Lade Mitarbeiterkosten
+      const employeeCostsResponse = await fetch('/api/employee-costs')
+      if (employeeCostsResponse.ok) {
+        const employeeCostsData = await employeeCostsResponse.json()
+        setEmployeeCosts(employeeCostsData.totalMonthlyCosts || 0)
+      }
+    } catch (error) {
+      console.error('Fehler beim Laden der Daten:', error)
+    }
+  }
 
   const handleCostAdded = (newCost: AdditionalCost) => {
     setAdditionalCosts(prev => [...prev, newCost])
+    // Lade die Daten neu, um sicherzustellen, dass alles synchron ist
+    refreshData()
   }
 
   const handleDeleteCost = async (costId: string) => {

@@ -128,16 +128,19 @@ export function EventCalculatorModal({ open, onOpenChange, onEventSaved, editEve
     try {
       setIsLoading(true)
       
+      // Für Edit: Verwende die bestehende ID, für neu: generiere eine neue
+      const eventId = editEvent?.id || crypto.randomUUID()
+      
       const eventData: CalculatorEvent = {
         ...data,
-        id: editEvent?.id || crypto.randomUUID(),
+        id: eventId,
         createdAt: editEvent?.createdAt || new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }
 
       // Calculator-Konfiguration für dieses Event speichern
       const configData = {
-        eventId: eventData.id,
+        eventId: eventId,
         vkPercentage: data.vkPercentage,
         termine: data.termine,
         gemaPercentage: data.gemaPercentage,
@@ -168,6 +171,7 @@ export function EventCalculatorModal({ open, onOpenChange, onEventSaved, editEve
       // Eventdaten inkl. Kalkulationen an /api/events senden
       const eventApiData = {
         ...eventData,
+        id: eventId, // Stelle sicher, dass die ID korrekt übertragen wird
         revenue: gesamtUmsatz,
         profit: finalProfit,
         expenses: totalCosts + rabattBetrag,
@@ -176,17 +180,23 @@ export function EventCalculatorModal({ open, onOpenChange, onEventSaved, editEve
         termine: termine,
         ticketsSold: Math.round(ticketsProTermin * termine),
       }
+
       const eventResponse = await fetch('/api/events', {
         method: editEvent ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(eventApiData),
       })
+
       if (!eventResponse.ok) {
+        const errorText = await eventResponse.text()
+        console.error('Event API Error:', errorText)
         throw new Error('Fehler beim Speichern des Events')
       }
-      const savedEvent = await eventResponse.json()
 
-      toast.success('Event erfolgreich gespeichert')
+      const savedEvent = await eventResponse.json()
+      console.log('Event saved successfully:', savedEvent)
+
+      toast.success(editEvent ? 'Event erfolgreich aktualisiert' : 'Event erfolgreich erstellt')
       onEventSaved(savedEvent)
       onOpenChange(false)
       reset()

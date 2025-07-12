@@ -93,6 +93,9 @@ export function CostManagement() {
         await fetchCosts()
         resetForm()
         toast.success(selectedCost ? 'Kosten wurden aktualisiert' : 'Kosten wurden hinzugefügt')
+        
+        // Sende ein Event, um andere Komponenten zu benachrichtigen
+        window.dispatchEvent(new CustomEvent('additional-costs-updated'))
       } else {
         const data = await response.json()
         toast.error(data.error || 'Fehler beim Speichern')
@@ -129,6 +132,9 @@ export function CostManagement() {
         setIsDeleteDialogOpen(false)
         setSelectedCost(null)
         toast.success('Kosten wurden gelöscht')
+        
+        // Sende ein Event, um andere Komponenten zu benachrichtigen
+        window.dispatchEvent(new CustomEvent('additional-costs-updated'))
       } else {
         const data = await response.json()
         toast.error(data.error || 'Fehler beim Löschen')

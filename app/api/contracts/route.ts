@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server'
 import type { Contract } from '@/lib/schemas/contract'
-import { supabase, type SupabaseContract } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 
 // Hilfsfunktion: Supabase Contract zu App Contract konvertieren
-function mapSupabaseToContract(supabaseContract: SupabaseContract): Contract {
+function mapSupabaseToContract(supabaseContract: any): Contract {
   return {
     id: supabaseContract.id,
     name: supabaseContract.name,
-    amount: Number(supabaseContract.betrag) || 0,
-    category: supabaseContract.kategorie,
-    interval: supabaseContract.intervall as Contract['interval'],
+    amount: Number(supabaseContract.amount) || 0,
+    category: supabaseContract.category,
+    interval: supabaseContract.interval as Contract['interval'],
     startDate: supabaseContract.start_date || '',
     endDate: supabaseContract.end_date || undefined,
     attachments: supabaseContract.attachments || [],
@@ -17,22 +17,22 @@ function mapSupabaseToContract(supabaseContract: SupabaseContract): Contract {
 }
 
 // Hilfsfunktion: App Contract zu Supabase Contract konvertieren
-function mapContractToSupabase(contract: Partial<Contract>): Partial<SupabaseContract> {
+function mapContractToSupabase(contract: Partial<Contract>): any {
   return {
     name: contract.name,
-    betrag: contract.amount,
-    kategorie: contract.category,
-    intervall: contract.interval,
+    amount: contract.amount,
+    category: contract.category,
+    interval: contract.interval,
     start_date: contract.startDate || null,
     end_date: contract.endDate && contract.endDate.trim() !== '' ? contract.endDate : null,
-    attachments: contract.attachments,
+    attachments: contract.attachments || [],
   }
 }
 
 export async function GET() {
   try {
     const { data: contracts, error } = await supabase
-      .from('vertragskosten')
+      .from('contracts')
       .select('*')
       .order('name')
 
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
     const supabaseData = mapContractToSupabase(body)
     
     const { data, error } = await supabase
-      .from('vertragskosten')
+      .from('contracts')
       .insert([supabaseData])
       .select()
       .single()
@@ -98,7 +98,7 @@ export async function PUT(request: Request) {
     const supabaseData = mapContractToSupabase(updateData)
     
     const { data, error } = await supabase
-      .from('vertragskosten')
+      .from('contracts')
       .update(supabaseData)
       .eq('id', body.id)
       .select()
@@ -132,7 +132,7 @@ export async function DELETE(request: Request) {
     }
     
     const { error } = await supabase
-      .from('vertragskosten')
+      .from('contracts')
       .delete()
       .eq('id', id)
 

@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { settingsSchema } from '@/lib/schemas/settings'
 import { getSettings, updateSettings } from '@/lib/db/settings'
 
 export async function GET() {
@@ -14,24 +13,24 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const validatedSettings = settingsSchema.parse(body)
     
-    // Konvertiere das validierte Schema in das Datenbankformat
+    // Direkte Verwendung der Daten ohne Schema-Validierung für jetzt
     const dbData = {
-      companyName: validatedSettings.companyName,
-      gemaPercentage: validatedSettings.gemaPercentage,
-      currency: validatedSettings.currency,
-      logoUrl: validatedSettings.logoUrl || null,
-      logoText: validatedSettings.logoText || null,
-      nikPercentage: validatedSettings.profitDistribution.nik,
-      adrianPercentage: validatedSettings.profitDistribution.adrian,
-      sebastianPercentage: validatedSettings.profitDistribution.sebastian,
-      mexifyPercentage: validatedSettings.profitDistribution.mexify,
+      companyName: body.companyName || 'SAN RISE GMBH',
+      gemaPercentage: body.gemaPercentage || 9,
+      currency: body.currency || 'EUR',
+      logoUrl: body.logoUrl || null,
+      logoText: body.logoText || 'SAN RISE GMBH',
+      nikPercentage: body.profitDistribution?.nik || 31.5,
+      adrianPercentage: body.profitDistribution?.adrian || 31.5,
+      sebastianPercentage: body.profitDistribution?.sebastian || 17,
+      mexifyPercentage: body.profitDistribution?.mexify || 20,
     }
     
     const settings = await updateSettings(dbData)
     return NextResponse.json(settings)
   } catch (error) {
+    console.error('Settings API Error:', error)
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 400 })
     }

@@ -58,6 +58,9 @@ export default function Employees() {
           )
           setSelectedEmployee(null)
           toast.success('Mitarbeiter wurde erfolgreich aktualisiert')
+          
+          // Sende ein Event, um andere Komponenten zu benachrichtigen
+          window.dispatchEvent(new CustomEvent('employee-updated'))
         } else {
           toast.error('Fehler beim Aktualisieren des Mitarbeiters')
         }
@@ -73,6 +76,9 @@ export default function Employees() {
           const newEmployee = await response.json()
           setEmployees((prev) => [...prev, newEmployee])
           toast.success('Mitarbeiter wurde erfolgreich hinzugefügt')
+          
+          // Sende ein Event, um andere Komponenten zu benachrichtigen
+          window.dispatchEvent(new CustomEvent('employee-updated'))
         } else {
           toast.error('Fehler beim Hinzufügen des Mitarbeiters')
         }
@@ -139,6 +145,9 @@ export default function Employees() {
         toast.success(
           `Mitarbeiter wurde ${updatedEmployee.isActive ? 'aktiviert' : 'pausiert'}`
         )
+        
+        // Sende ein Event, um andere Komponenten zu benachrichtigen
+        window.dispatchEvent(new CustomEvent('employee-updated'))
       } else {
         throw new Error('Fehler beim Ändern des Status')
       }

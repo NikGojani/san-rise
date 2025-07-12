@@ -92,6 +92,9 @@ export function AddAdditionalCostModal({ open, onOpenChange, onCostAdded }: AddA
       setAttachments([])
       onOpenChange(false)
       toast.success('Zusätzliche Kosten wurden erfolgreich hinzugefügt')
+      
+      // Sende ein Event, um andere Komponenten zu benachrichtigen
+      window.dispatchEvent(new CustomEvent('additional-costs-updated'))
     } catch (error) {
       toast.error('Fehler beim Hinzufügen der zusätzlichen Kosten')
     } finally {

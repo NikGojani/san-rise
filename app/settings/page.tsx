@@ -1,72 +1,38 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useForm, useWatch } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { settingsSchema, type Settings } from '@/lib/schemas/settings'
+import { z } from 'zod'
 import { toast } from 'sonner'
-import Image from 'next/image'
-import { Building2 } from 'lucide-react'
 import { ChangePasswordForm } from '@/components/change-password-form'
 
-function LogoPreview({ control }: { control: any }) {
-  const logoUrl = useWatch({ control, name: 'logoUrl' })
-  const logoText = useWatch({ control, name: 'logoText' })
+// Vereinfachtes Settings-Schema ohne Logo-Felder
+const settingsSchema = z.object({
+  companyName: z.string().min(1, 'Firmenname ist erforderlich'),
+  gemaPercentage: z.number().min(0).max(100),
+  currency: z.enum(['EUR', 'USD', 'GBP']),
+  profitDistribution: z.object({
+    nik: z.number().min(0).max(100),
+    adrian: z.number().min(0).max(100),
+    sebastian: z.number().min(0).max(100),
+    mexify: z.number().min(0).max(100),
+  }).refine((data) => {
+    const total = data.nik + data.adrian + data.sebastian + data.mexify
+    return total === 100
+  }, 'Die Gewinnverteilung muss insgesamt 100% ergeben'),
+})
 
-  if (logoUrl) {
-    return (
-      <div className="flex items-center space-x-3">
-        <div className="relative w-8 h-8 flex-shrink-0">
-          <Image
-            src={logoUrl}
-            alt="Logo Vorschau"
-            fill
-            className="object-contain"
-            sizes="32px"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement
-              target.style.display = 'none'
-            }}
-          />
-        </div>
-        {logoText && (
-          <h1 className="text-lg font-bold text-foreground truncate">{logoText}</h1>
-        )}
-      </div>
-    )
-  }
-
-  if (logoText) {
-    return (
-      <div className="flex items-center space-x-3">
-        <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Building2 className="h-5 w-5 text-white" />
-        </div>
-        <h1 className="text-lg font-bold text-foreground truncate">{logoText}</h1>
-      </div>
-    )
-  }
-
-  return (
-    <div className="flex items-center space-x-3">
-      <div className="w-8 h-8 border-2 border-dashed border-muted rounded-lg flex items-center justify-center flex-shrink-0">
-        <Building2 className="h-4 w-4 text-muted-foreground" />
-      </div>
-      <h1 className="text-lg font-bold text-muted-foreground">Firmenname wird angezeigt</h1>
-    </div>
-  )
-}
+type Settings = z.infer<typeof settingsSchema>
 
 export default function Settings() {
   const [isLoading, setIsLoading] = useState(false)
-  const { register, handleSubmit, formState: { errors }, reset, control } = useForm<Settings>({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<Settings>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
       companyName: 'SAN RISE GMBH',
       gemaPercentage: 9,
       currency: 'EUR',
-      logoUrl: '',
-      logoText: 'SAN RISE GMBH',
       profitDistribution: {
         nik: 31.5,
         adrian: 31.5,
@@ -88,8 +54,6 @@ export default function Settings() {
             companyName: data.companyName,
             gemaPercentage: data.gemaPercentage,
             currency: data.currency,
-            logoUrl: data.logoUrl || '',
-            logoText: data.logoText || '',
             profitDistribution: {
               nik: data.nikPercentage,
               adrian: data.adrianPercentage,
@@ -109,10 +73,18 @@ export default function Settings() {
   const onSubmit = async (data: Settings) => {
     try {
       setIsLoading(true)
+      
+      // Erweitere die Daten mit festen Logo-Werten
+      const fullData = {
+        ...data,
+        logoUrl: null,
+        logoText: 'SAN RISE GMBH',
+      }
+      
       const response = await fetch('/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(fullData),
       })
 
       if (!response.ok) {
@@ -135,52 +107,6 @@ export default function Settings() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Logo-Einstellungen */}
-        <div className="bg-card rounded-lg p-6 border border-border">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Logo-Einstellungen (Optional)</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Logo URL (Optional)</label>
-                <input
-                  {...register('logoUrl')}
-                  type="url"
-                  placeholder="https://example.com/logo.png"
-                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  URL zu Ihrem transparenten Logo (PNG empfohlen). Wenn leer, wird nur der Text verwendet.
-                </p>
-                {errors.logoUrl && (
-                  <p className="text-destructive text-sm mt-1">{errors.logoUrl.message}</p>
-                )}
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Logo-Text (Optional)</label>
-                <input
-                  {...register('logoText')}
-                  type="text"
-                  placeholder="Firmenname (falls abweichend)"
-                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Überschreibt den Firmennamen in der Navigation. Wenn leer, wird der Firmenname verwendet.
-                </p>
-                {errors.logoText && (
-                  <p className="text-destructive text-sm mt-1">{errors.logoText.message}</p>
-                )}
-              </div>
-            </div>
-            
-            <div className="bg-muted/30 rounded-lg p-4 border border-border">
-              <h4 className="text-sm font-medium text-foreground mb-3">Vorschau</h4>
-              <div className="bg-card rounded-lg p-4 border border-border">
-                <LogoPreview control={control} />
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-card rounded-lg p-6 border border-border">
             <h3 className="text-lg font-semibold text-foreground mb-4">Allgemeine Einstellungen</h3>

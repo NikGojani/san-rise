@@ -163,6 +163,29 @@ export default function Calculator() {
 
   useEffect(() => {
     loadData()
+    
+    // Event-Listener für Updates der Mitarbeiterkosten
+    const handleEmployeeUpdated = async () => {
+      try {
+        const employeeCostsResponse = await fetch('/api/employee-costs')
+        if (employeeCostsResponse.ok) {
+          const employeeCosts = await employeeCostsResponse.json()
+          setMonthlyFixedCosts(prev => ({
+            ...prev,
+            corporateCost: employeeCosts.totalMonthlyCosts > 0,
+            corporateCostAmount: employeeCosts.totalMonthlyCosts,
+          }))
+        }
+      } catch (error) {
+        console.error('Fehler beim Aktualisieren der CORPORATE-Kosten:', error)
+      }
+    }
+    
+    window.addEventListener('employee-updated', handleEmployeeUpdated)
+    
+    return () => {
+      window.removeEventListener('employee-updated', handleEmployeeUpdated)
+    }
   }, [loadData])
 
   const handleUpdateFixedCosts = (field: string, value: number | boolean) => {
@@ -647,15 +670,15 @@ export default function Calculator() {
                   </div>
 
                   <div className="space-y-3">
-                    {/* Corporate Cost Checkbox - nicht bearbeitbar */}
+                    {/* Corporate Cost Checkbox - automatisch synchronisiert */}
                     <div className="flex items-center space-x-3">
                       <input 
                         type="checkbox" 
                         checked={monthlyFixedCosts.corporateCost} 
-                        onChange={(e) => handleUpdateFixedCosts("corporateCost", e.target.checked)}
-                        className="rounded border-gray-300 text-gray-600 focus:ring-gray-500" 
+                        disabled={true}
+                        className="rounded border-gray-300 text-gray-600 focus:ring-gray-500 opacity-50 cursor-not-allowed" 
                       />
-                      <span className="text-foreground font-medium text-sm">CORPORATE</span>
+                      <span className="text-foreground font-medium text-sm">CORPORATE (automatisch)</span>
                       <span className="text-foreground text-sm ml-auto">{monthlyFixedCosts.corporateCostAmount.toLocaleString()} €</span>
                     </div>
                     
