@@ -115,9 +115,9 @@ export default function Calculator() {
         calculatorEvents = appEvents.map(appEvent => {
           const config = configs.find(cfg => cfg.eventId === appEvent.id)
           return mapAppEventToCalculatorEvent(appEvent, config)
-        })
+          })
       }
-      setEvents(calculatorEvents)
+          setEvents(calculatorEvents)
 
         // Lade Vertragskosten
         const contractsResponse = await fetch('/api/contracts')
