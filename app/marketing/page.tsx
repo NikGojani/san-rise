@@ -1,6 +1,6 @@
-export const dynamic = 'force-dynamic'
-
 "use client"
+
+export const dynamic = 'force-dynamic'
 
 import { useState, useEffect } from "react"
 import { Calendar, TrendingUp, DollarSign, Target, Plus, Edit, BarChart3 } from "lucide-react"
