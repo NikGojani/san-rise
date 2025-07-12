@@ -54,7 +54,7 @@ export function Topbar() {
   }
 
   return (
-    <header className="h-16 bg-card border-b border-border flex items-center justify-end px-6">
+    <header className="h-16 bg-card border-b border-gray-300 flex items-center justify-end px-6">
       <div className="flex items-center space-x-4">
         <Button 
           variant="ghost" 
@@ -91,7 +91,7 @@ export function Topbar() {
               </div>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-card border-border" align="end" forceMount>
+          <DropdownMenuContent className="w-56 bg-card border-gray-300" align="end" forceMount>
             <DropdownMenuLabel className="text-muted-foreground">
               <div className="flex items-center space-x-3">
                 <Avatar className="h-10 w-10">

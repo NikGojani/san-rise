@@ -121,8 +121,8 @@ export function TaskList() {
 
   if (loading) {
     return (
-      <div className="bg-card rounded-lg border border-border">
-        <div className="p-6 border-b border-border">
+      <div className="bg-card rounded-lg border border-gray-300">
+        <div className="p-6 border-b border-gray-300">
           <h3 className="text-lg font-semibold text-foreground">Aufgaben Liste</h3>
         </div>
         <div className="p-6">
@@ -138,8 +138,8 @@ export function TaskList() {
 
   return (
     <>
-      <div className="bg-card rounded-lg border border-border">
-        <div className="p-6 border-b border-border">
+      <div className="bg-card rounded-lg border border-gray-300">
+        <div className="p-6 border-b border-gray-300">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-foreground">Aufgaben Liste</h3>
             <button 
@@ -155,7 +155,7 @@ export function TaskList() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-gray-300">
                 <th
                   className="text-left py-4 px-6 text-muted-foreground font-medium cursor-pointer hover:text-foreground flex items-center"
                   onClick={() => handleSort("title")}
@@ -210,7 +210,7 @@ export function TaskList() {
 
             <tbody>
               {sortedTasks.map((task) => (
-                <tr key={task.id} className="border-b border-border hover:bg-accent/50 transition-colors">
+                <tr key={task.id} className="border-b border-gray-300 hover:bg-accent/50 transition-colors">
                   <td className="py-4 px-6">
                     <div className="flex items-center space-x-3">
                       <button

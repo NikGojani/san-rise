@@ -123,7 +123,7 @@ export default function Contracts() {
           <h1 className="text-3xl font-bold text-foreground">Vertragskosten</h1>
           <p className="text-muted-foreground mt-2">Verwalten Sie Ihre Verträge und Kosten</p>
         </div>
-        <div className="bg-card rounded-lg p-6 border border-border">
+        <div className="bg-card rounded-lg p-6 border border-gray-300">
           <div className="animate-pulse space-y-4">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="h-16 bg-muted rounded"></div>
@@ -154,12 +154,12 @@ export default function Contracts() {
 
       {/* Gesamtkosten */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-card rounded-lg p-6 border border-border">
+        <div className="bg-card rounded-lg p-6 border border-gray-300">
           <h3 className="text-lg font-semibold text-foreground mb-2">Monatliche Gesamtkosten</h3>
                           <p className="text-3xl font-bold text-positive">€{calculateTotalMonthlyCosts().toFixed(2)}</p>
           <p className="text-muted-foreground text-sm mt-1">Durchschnittliche monatliche Belastung</p>
         </div>
-        <div className="bg-card rounded-lg p-6 border border-border">
+        <div className="bg-card rounded-lg p-6 border border-gray-300">
           <h3 className="text-lg font-semibold text-foreground mb-2">Jährliche Gesamtkosten</h3>
           <p className="text-3xl font-bold text-blue-500">€{calculateTotalYearlyCosts().toFixed(2)}</p>
           <p className="text-muted-foreground text-sm mt-1">Gesamte jährliche Belastung</p>
@@ -167,11 +167,11 @@ export default function Contracts() {
       </div>
 
       {/* Verträge Tabelle */}
-      <div className="bg-card rounded-lg border border-border">
+      <div className="bg-card rounded-lg border border-gray-300">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-gray-300">
                 <th className="text-left py-4 px-6 text-muted-foreground font-medium">Vertragsname</th>
                 <th className="text-right py-4 px-6 text-muted-foreground font-medium">Betrag (€)</th>
                 <th className="text-left py-4 px-6 text-muted-foreground font-medium">Kategorie</th>
@@ -185,7 +185,7 @@ export default function Contracts() {
             </thead>
             <tbody>
               {contracts.map((contract) => (
-                <tr key={contract.id} className="border-b border-border hover:bg-accent/50">
+                <tr key={contract.id} className="border-b border-gray-300 hover:bg-accent/50">
                   <td className="py-4 px-6 text-foreground font-medium">{contract.name}</td>
                   <td className="py-4 px-6 text-right text-foreground">€{contract.amount.toLocaleString()}</td>
                   <td className="py-4 px-6 text-foreground">{contract.category}</td>
@@ -265,7 +265,7 @@ export default function Contracts() {
 
       {/* Löschen Dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent className="bg-card border-border text-foreground">
+        <DialogContent className="bg-card border-gray-300 text-foreground">
           <DialogHeader>
             <DialogTitle>Vertrag löschen</DialogTitle>
           </DialogHeader>
@@ -292,7 +292,7 @@ export default function Contracts() {
 
       {/* Dateien Dialog */}
       <Dialog open={isFilesDialogOpen} onOpenChange={setIsFilesDialogOpen}>
-        <DialogContent className="bg-card border-border text-foreground">
+        <DialogContent className="bg-card border-gray-300 text-foreground">
           <DialogHeader>
             <DialogTitle>Dokumente - {selectedContract?.name}</DialogTitle>
           </DialogHeader>

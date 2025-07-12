@@ -64,7 +64,7 @@ export default function LoginPage() {
         </div>
 
         {/* Login Form */}
-        <Card className="bg-card border-border">
+        <Card className="bg-card border-gray-300">
           <CardHeader>
             <CardTitle className="text-foreground text-center">Anmelden</CardTitle>
             <CardDescription className="text-muted-foreground text-center">
@@ -89,7 +89,7 @@ export default function LoginPage() {
                     id="username"
                     {...register('username')}
                     placeholder="Benutzername eingeben"
-                    className="pl-10 bg-background border-border text-foreground"
+                    className="pl-10 bg-background border-gray-300 text-foreground"
                     disabled={isLoading}
                   />
                 </div>
@@ -107,7 +107,7 @@ export default function LoginPage() {
                     type="password"
                     {...register('password')}
                     placeholder="Passwort eingeben"
-                    className="pl-10 bg-background border-border text-foreground"
+                    className="pl-10 bg-background border-gray-300 text-foreground"
                     disabled={isLoading}
                   />
                 </div>

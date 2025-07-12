@@ -175,7 +175,7 @@ export default function Employees() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-card rounded-lg p-6 border border-border animate-pulse">
+            <div key={i} className="bg-card rounded-lg p-6 border border-gray-300 animate-pulse">
               <div className="h-6 bg-accent rounded mb-4"></div>
               <div className="space-y-2">
                 <div className="h-4 bg-accent rounded"></div>
@@ -209,19 +209,19 @@ export default function Employees() {
 
       {/* Gesamtkosten und Statistiken */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-card rounded-lg p-6 border border-border">
+        <div className="bg-card rounded-lg p-6 border border-gray-300">
           <h3 className="text-lg font-semibold text-foreground mb-2">Aktive Monatskosten</h3>
                           <p className="text-3xl font-bold text-positive">€{calculateTotalMonthlyCosts().toLocaleString()}</p>
           <p className="text-muted-foreground mt-1">Nur aktive Mitarbeiter</p>
         </div>
         
-        <div className="bg-card rounded-lg p-6 border border-border">
+        <div className="bg-card rounded-lg p-6 border border-gray-300">
           <h3 className="text-lg font-semibold text-foreground mb-2">Aktive Mitarbeiter</h3>
           <p className="text-3xl font-bold text-blue-500">{getActiveEmployeesCount()}</p>
           <p className="text-muted-foreground mt-1">Von {employees.length} Gesamt</p>
         </div>
         
-        <div className="bg-card rounded-lg p-6 border border-border">
+        <div className="bg-card rounded-lg p-6 border border-gray-300">
           <h3 className="text-lg font-semibold text-foreground mb-2">Pausierte Mitarbeiter</h3>
                           <p className="text-3xl font-bold text-negative">{getInactiveEmployeesCount()}</p>
           <p className="text-muted-foreground mt-1">Nicht in Kostenberechnung</p>
@@ -231,7 +231,7 @@ export default function Employees() {
       {/* Mitarbeiter Karten */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {employees.map((employee) => (
-          <div key={employee.id} className={`bg-card rounded-lg p-6 border transition-all ${employee.isActive ? 'border-border' : 'border-red-500/50 bg-card/50 opacity-75'}`}>
+          <div key={employee.id} className={`bg-card rounded-lg p-6 border transition-all ${employee.isActive ? 'border-gray-300' : 'border-red-500/50 bg-card/50 opacity-75'}`}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center ${employee.isActive ? 'bg-indigo-600' : 'bg-red-600'}`}>
@@ -254,7 +254,7 @@ export default function Employees() {
                   variant="outline"
                   size="icon"
                   onClick={() => showFiles(employee)}
-                  className="h-8 w-8 bg-transparent border-border text-foreground hover:bg-accent"
+                  className="h-8 w-8 bg-transparent border-gray-300 text-foreground hover:bg-accent"
                 >
                   <FileText className="h-4 w-4" />
                 </Button>
@@ -264,7 +264,7 @@ export default function Employees() {
                       variant="outline"
                       size="icon"
                       onClick={() => handleToggleEmployeeStatus(employee)}
-                      className={`h-8 w-8 bg-transparent border-border text-foreground ${
+                      className={`h-8 w-8 bg-transparent border-gray-300 text-foreground ${
                         employee.isActive 
                           ? 'hover:bg-red-900/20 hover:border-red-800' 
                           : 'hover:bg-green-900/20 hover:border-green-800'
@@ -277,7 +277,7 @@ export default function Employees() {
                       variant="outline"
                       size="icon"
                       onClick={() => handleEditEmployee(employee)}
-                      className="h-8 w-8 bg-transparent border-border text-foreground hover:bg-blue-900/20 hover:border-blue-800"
+                      className="h-8 w-8 bg-transparent border-gray-300 text-foreground hover:bg-blue-900/20 hover:border-blue-800"
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
@@ -285,7 +285,7 @@ export default function Employees() {
                       variant="outline"
                       size="icon"
                       onClick={() => handleDeleteEmployee(employee)}
-                      className="h-8 w-8 bg-transparent border-border text-foreground hover:bg-red-900/20 hover:border-red-800"
+                      className="h-8 w-8 bg-transparent border-gray-300 text-foreground hover:bg-red-900/20 hover:border-red-800"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -303,13 +303,13 @@ export default function Employees() {
                 <span className="text-muted-foreground text-sm">Zusatzkosten</span>
                 <span className={`font-medium ${employee.isActive ? 'text-foreground' : 'text-muted-foreground'}`}>€{employee.additionalCosts?.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between items-center pt-2 border-t border-border">
+              <div className="flex justify-between items-center pt-2 border-t border-gray-300">
                 <span className="text-muted-foreground text-sm font-medium">Gesamtkosten</span>
                 <span className={`font-bold ${employee.isActive ? 'text-positive' : 'text-muted-foreground'}`}>€{employee.totalMonthlyCosts?.toLocaleString()}</span>
               </div>
             </div>
 
-            <div className="mt-4 pt-4 border-t border-border space-y-2">
+            <div className="mt-4 pt-4 border-t border-gray-300 space-y-2">
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Mail className="h-3 w-3" />
                 <span>{employee.email}</span>
@@ -343,7 +343,7 @@ export default function Employees() {
 
       {/* Löschen Dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent className="bg-card border-border text-foreground">
+        <DialogContent className="bg-card border-gray-300 text-foreground">
           <DialogHeader>
             <DialogTitle className="text-foreground">Mitarbeiter löschen</DialogTitle>
           </DialogHeader>
@@ -354,7 +354,7 @@ export default function Employees() {
             <Button
               variant="outline"
               onClick={() => setIsDeleteDialogOpen(false)}
-              className="bg-transparent border-border text-foreground hover:bg-accent"
+              className="bg-transparent border-gray-300 text-foreground hover:bg-accent"
             >
               Abbrechen
             </Button>
@@ -370,7 +370,7 @@ export default function Employees() {
 
       {/* Dateien Dialog */}
       <Dialog open={isFilesDialogOpen} onOpenChange={setIsFilesDialogOpen}>
-        <DialogContent className="bg-card border-border text-foreground">
+        <DialogContent className="bg-card border-gray-300 text-foreground">
           <DialogHeader>
             <DialogTitle className="text-foreground">Dokumente - {selectedEmployee?.name}</DialogTitle>
           </DialogHeader>

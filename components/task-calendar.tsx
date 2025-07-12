@@ -76,7 +76,7 @@ export function TaskCalendar() {
 
   if (loading) {
     return (
-      <div className="bg-card rounded-xl p-6 border border-border">
+      <div className="bg-card rounded-xl p-6 border border-gray-300">
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
@@ -90,7 +90,7 @@ export function TaskCalendar() {
   }
 
   return (
-    <div className="bg-card rounded-xl p-6 border border-border">
+    <div className="bg-card rounded-xl p-6 border border-gray-300">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-bold text-foreground flex items-center">
           <Calendar className="mr-2 h-6 w-6" />
@@ -143,7 +143,7 @@ export function TaskCalendar() {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={`h-24 rounded-lg border border-border p-2 ${
+                    className={`h-24 rounded-lg border border-gray-300 p-2 ${
                       isToday ? "bg-primary/10 border-primary" : "bg-accent/30"
                     } hover:bg-accent/50 transition-colors ${
                       snapshot.isDraggingOver ? "bg-primary/20 border-primary/50" : ""
@@ -167,7 +167,7 @@ export function TaskCalendar() {
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
-                              className={`text-xs p-1 rounded bg-card border border-border truncate group relative cursor-grab active:cursor-grabbing ${
+                              className={`text-xs p-1 rounded bg-card border border-gray-300 truncate group relative cursor-grab active:cursor-grabbing ${
                                 snapshot.isDragging ? "shadow-lg rotate-2 scale-105 z-50" : ""
                               } ${taskIndex >= 2 ? "hidden" : ""}`}
                               title={`${task.title} - ${task.assignedTo} (Zum Verschieben ziehen)`}
@@ -216,7 +216,7 @@ export function TaskCalendar() {
         </div>
       </div>
       
-      <div className="mt-4 p-3 bg-accent/50 rounded-lg border border-border">
+      <div className="mt-4 p-3 bg-accent/50 rounded-lg border border-gray-300">
         <p className="text-xs text-muted-foreground text-center">
           💡 <strong>Tipp:</strong> Ziehe Aufgaben per Drag & Drop zwischen den Kalendertagen, um das Datum zu ändern
         </p>

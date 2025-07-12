@@ -128,7 +128,7 @@ body {
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-gray-300;
   }
   body {
     @apply bg-background text-foreground;
@@ -159,17 +159,17 @@ body {
   
   /* Card enhancements with subtle glow */
   .card-enhanced {
-    @apply bg-card border border-border/50 shadow-xl 
+    @apply bg-card border border-gray-300/50 shadow-xl 
            backdrop-blur-sm transition-all duration-200;
   }
   
   .card-enhanced:hover {
-    @apply border-border shadow-2xl shadow-primary/5;
+    @apply border-gray-300 shadow-2xl shadow-primary/5;
   }
   
   /* Input field enhancements */
   .input-enhanced {
-    @apply bg-input border border-border text-foreground 
+    @apply bg-input border border-gray-300 text-foreground 
            placeholder:text-muted-foreground
            focus:border-ring focus:ring-1 focus:ring-ring
            transition-all duration-200;

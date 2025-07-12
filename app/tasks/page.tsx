@@ -31,7 +31,7 @@ export default function Tasks() {
             <span>Aufgabe hinzufügen</span>
           </Button>
 
-          <div className="flex items-center space-x-2 bg-card rounded-lg p-1 border border-border">
+          <div className="flex items-center space-x-2 bg-card rounded-lg p-1 border border-gray-300">
             <button
               onClick={() => setViewMode("kanban")}
               className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${

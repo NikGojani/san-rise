@@ -107,7 +107,7 @@ export default function Events() {
           <h1 className="text-3xl font-bold text-foreground">Events Übersicht</h1>
           <p className="text-muted-foreground mt-2">Verwalten Sie Ihre Events und deren Performance</p>
         </div>
-        <div className="bg-card rounded-lg p-6 border border-border">
+        <div className="bg-card rounded-lg p-6 border border-gray-300">
           <div className="animate-pulse space-y-4">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="h-16 bg-muted rounded"></div>
@@ -136,7 +136,7 @@ export default function Events() {
 
       {/* Statistiken */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-card rounded-lg p-6 border border-border">
+        <div className="bg-card rounded-lg p-6 border border-gray-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-muted-foreground text-sm font-medium">Gesamtumsatz</p>
@@ -148,7 +148,7 @@ export default function Events() {
           </div>
         </div>
 
-        <div className="bg-card rounded-lg p-6 border border-border">
+        <div className="bg-card rounded-lg p-6 border border-gray-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-muted-foreground text-sm font-medium">Gesamtgewinn</p>
@@ -160,7 +160,7 @@ export default function Events() {
           </div>
         </div>
 
-        <div className="bg-card rounded-lg p-6 border border-border">
+        <div className="bg-card rounded-lg p-6 border border-gray-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-muted-foreground text-sm font-medium">Tickets verkauft</p>
@@ -172,7 +172,7 @@ export default function Events() {
           </div>
         </div>
 
-        <div className="bg-card rounded-lg p-6 border border-border">
+        <div className="bg-card rounded-lg p-6 border border-gray-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-muted-foreground text-sm font-medium">Events gesamt</p>
@@ -186,14 +186,14 @@ export default function Events() {
       </div>
 
       {/* Filter */}
-      <div className="bg-card rounded-lg p-4 border border-border">
+      <div className="bg-card rounded-lg p-4 border border-gray-300">
         <div className="flex items-center space-x-4">
           <label className="text-foreground font-medium">Filter nach Datum:</label>
           <input
             type="month"
             value={dateFilter}
             onChange={(e) => setDateFilter(e.target.value)}
-            className="px-3 py-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            className="px-3 py-2 bg-input border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
           {dateFilter && (
             <button onClick={() => setDateFilter("")} className="text-muted-foreground hover:text-foreground transition-colors">
@@ -204,11 +204,11 @@ export default function Events() {
       </div>
 
       {/* Events Tabelle */}
-      <div className="bg-card rounded-lg border border-border">
+      <div className="bg-card rounded-lg border border-gray-300">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-gray-300">
                 <th className="text-left py-4 px-6 text-muted-foreground font-medium">Eventname</th>
                 <th className="text-center py-4 px-6 text-muted-foreground font-medium">Status</th>
                 <th className="text-center py-4 px-6 text-muted-foreground font-medium">Shopify</th>
@@ -253,7 +253,7 @@ export default function Events() {
                 }
 
                 return (
-                  <tr key={event.id} className="border-b border-border hover:bg-accent/50">
+                  <tr key={event.id} className="border-b border-gray-300 hover:bg-accent/50">
                     <td className="py-4 px-6">
                       <div className="text-foreground font-medium">{event.name}</div>
                       {event.location && (

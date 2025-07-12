@@ -210,7 +210,7 @@ export function EventCalculatorModal({ open, onOpenChange, onEventSaved, editEve
             
             {/* Linke Spalte: Event Konfiguration */}
             <div className="xl:col-span-1">
-              <div className="bg-muted/30 rounded-xl p-4 border border-border">
+              <div className="bg-muted/30 rounded-xl p-4 border border-gray-300">
                 <h3 className="text-lg font-bold text-foreground mb-4">Event Konfiguration</h3>
                 
                 <div className="space-y-4">
@@ -371,7 +371,7 @@ export function EventCalculatorModal({ open, onOpenChange, onEventSaved, editEve
 
             {/* Rechte Spalten: Event Vorschau */}
             <div className="xl:col-span-2">
-              <div className="bg-card rounded-xl p-6 border border-border">
+              <div className="bg-card rounded-xl p-6 border border-gray-300">
                 <h3 className="text-2xl font-bold text-center text-foreground mb-6">{watch('name') || 'Event Vorschau'}</h3>
                 
                 <div className="space-y-3 text-base">
@@ -390,7 +390,7 @@ export function EventCalculatorModal({ open, onOpenChange, onEventSaved, editEve
                       <span className="text-xl font-bold text-foreground">{ticketPrice}</span> € x <span className="text-xl font-bold text-foreground">{vkPercentage}</span>% VK
                     </span>
                   </div>
-                  <div className="flex justify-between items-center border-b border-border pb-3">
+                  <div className="flex justify-between items-center border-b border-gray-300 pb-3">
                     <span className="text-muted-foreground">{Math.round(ticketCount * termine * vkPercentage / 100)} verkauft</span>
                     <span className={`text-xl font-bold ${getValueColorClass(gesamtUmsatz)}`}>{formatValue(gesamtUmsatz)} €</span>
                   </div>
@@ -434,7 +434,7 @@ export function EventCalculatorModal({ open, onOpenChange, onEventSaved, editEve
                     )}
                   </div>
 
-                  <div className="border-t border-border pt-3 mt-4">
+                  <div className="border-t border-gray-300 pt-3 mt-4">
                     <div className="flex justify-between items-center">
                       <span className="font-bold text-foreground text-lg">GEWINN</span>
                       <span className={`font-bold text-xl ${getValueColorClass(finalProfit)}`}>{formatValue(finalProfit)} €</span>
@@ -464,7 +464,7 @@ export function EventCalculatorModal({ open, onOpenChange, onEventSaved, editEve
                           </div>
                         )}
                       </div>
-                      <div className="border-t border-border pt-3 mt-3">
+                      <div className="border-t border-gray-300 pt-3 mt-3">
                         <div className="flex justify-between items-center">
                           <span className="font-bold text-foreground text-lg">GEWINN OHNE OPTIONAL</span>
                           <span className={`font-bold text-xl ${getValueColorClass(finalProfit - optionalCosts)}`}>{formatValue(finalProfit - optionalCosts)} €</span>

@@ -208,7 +208,7 @@ export default function Marketing() {
       </div>
 
       {/* Zeitfilter */}
-      <div className="bg-card rounded-lg p-4 border border-border">
+      <div className="bg-card rounded-lg p-4 border border-gray-300">
         <div className="flex items-center space-x-4">
           <label className="text-foreground font-medium">Zeitraum:</label>
           <div className="flex space-x-2">
@@ -250,7 +250,7 @@ export default function Marketing() {
           filteredEvents.map((event) => (
             <Card 
               key={event.id} 
-              className="cursor-pointer hover:shadow-lg transition-shadow border border-border"
+              className="cursor-pointer hover:shadow-lg transition-shadow border border-gray-300"
               onClick={() => openEventDetails(event)}
             >
               <CardHeader>
@@ -346,7 +346,7 @@ export default function Marketing() {
                       </p>
                       
                       {metaCampaigns.map((campaign) => (
-                        <div key={campaign.id} className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-border">
+                        <div key={campaign.id} className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-300">
                           <h4 className="font-medium text-foreground mb-2">{campaign.name}</h4>
                           <div className="grid grid-cols-3 gap-4 text-sm">
                             <div>
@@ -370,7 +370,7 @@ export default function Marketing() {
               </Card>
 
               {/* Shopify Ticket-Verkäufe Karte */}
-              <Card className="border border-border">
+              <Card className="border border-gray-300">
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <span>Ticket-Verkäufe (Shopify)</span>

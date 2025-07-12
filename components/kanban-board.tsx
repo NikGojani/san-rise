@@ -100,7 +100,7 @@ export function KanbanBoard() {
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {columns.map((column) => (
-            <div key={column.id} className="bg-card rounded-lg p-4 border border-border">
+            <div key={column.id} className="bg-card rounded-lg p-4 border border-gray-300">
               <div className={`flex items-center justify-between mb-4 pb-2 border-b-2 ${column.color}`}>
                 <h3 className="font-semibold text-foreground">{column.title}</h3>
                 <span className="bg-accent text-muted-foreground px-2 py-1 rounded-full text-xs">
@@ -121,7 +121,7 @@ export function KanbanBoard() {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               onClick={(e) => handleTaskClick(e, task)}
-                              className="bg-accent rounded-lg p-4 border border-border hover:border-primary transition-colors cursor-pointer"
+                              className="bg-accent rounded-lg p-4 border border-gray-300 hover:border-primary transition-colors cursor-pointer"
                             >
                               <div className="flex items-start justify-between mb-2">
                                 <h4 className="font-medium text-foreground flex-1">{task.title}</h4>

@@ -78,7 +78,7 @@ export function QuickActions() {
 
   return (
     <>
-      <div className="bg-card rounded-xl p-6 border border-border">
+      <div className="bg-card rounded-xl p-6 border border-gray-300">
         <h3 className="text-lg font-semibold text-foreground mb-4">Schnellaktionen</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {actions.map((action) => (

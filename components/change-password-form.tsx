@@ -66,7 +66,7 @@ export function ChangePasswordForm() {
   }
 
   return (
-    <Card className="bg-card border-border">
+    <Card className="bg-card border-gray-300">
       <CardHeader>
         <CardTitle className="text-foreground flex items-center">
           <Lock className="mr-2 h-5 w-5" />
@@ -87,7 +87,7 @@ export function ChangePasswordForm() {
                 id="currentPassword"
                 type={showPasswords.current ? 'text' : 'password'}
                 {...register('currentPassword')}
-                className="bg-background border-border text-foreground pr-10"
+                className="bg-background border-gray-300 text-foreground pr-10"
                 disabled={isLoading}
               />
               <Button
@@ -114,7 +114,7 @@ export function ChangePasswordForm() {
                 id="newPassword"
                 type={showPasswords.new ? 'text' : 'password'}
                 {...register('newPassword')}
-                className="bg-background border-border text-foreground pr-10"
+                className="bg-background border-gray-300 text-foreground pr-10"
                 disabled={isLoading}
               />
               <Button
@@ -141,7 +141,7 @@ export function ChangePasswordForm() {
                 id="confirmPassword"
                 type={showPasswords.confirm ? 'text' : 'password'}
                 {...register('confirmPassword')}
-                className="bg-background border-border text-foreground pr-10"
+                className="bg-background border-gray-300 text-foreground pr-10"
                 disabled={isLoading}
               />
               <Button

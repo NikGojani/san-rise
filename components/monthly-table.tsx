@@ -157,7 +157,7 @@ export function MonthlyTable() {
 
   if (loading) {
     return (
-      <div className="bg-card rounded-xl p-8 border border-border">
+      <div className="bg-card rounded-xl p-8 border border-gray-300">
         <h3 className="text-xl font-semibold text-foreground mb-6">Monatliche Kosten</h3>
         <div className="animate-pulse space-y-4">
           {[...Array(3)].map((_, i) => (
@@ -170,7 +170,7 @@ export function MonthlyTable() {
 
   return (
     <>
-      <div className="bg-card rounded-xl p-8 border border-border">
+      <div className="bg-card rounded-xl p-8 border border-gray-300">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
             <h3 className="text-xl font-semibold text-foreground">Monatliche Kosten</h3>
@@ -179,7 +179,7 @@ export function MonthlyTable() {
                 onClick={handlePreviousMonths}
                 variant="outline"
                 size="sm"
-                className="bg-transparent border-border text-foreground hover:bg-accent"
+                className="bg-transparent border-gray-300 text-foreground hover:bg-accent"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -187,7 +187,7 @@ export function MonthlyTable() {
                 onClick={handleCurrentMonth}
                 variant="outline"
                 size="sm"
-                className="bg-transparent border-border text-foreground hover:bg-accent"
+                className="bg-transparent border-gray-300 text-foreground hover:bg-accent"
                 disabled={currentMonthOffset === 0}
               >
                 Heute
@@ -196,7 +196,7 @@ export function MonthlyTable() {
                 onClick={handleNextMonths}
                 variant="outline"
                 size="sm"
-                className="bg-transparent border-border text-foreground hover:bg-accent"
+                className="bg-transparent border-gray-300 text-foreground hover:bg-accent"
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -215,7 +215,7 @@ export function MonthlyTable() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-gray-300">
                 <th className="text-left py-4 px-2 text-muted-foreground font-semibold text-sm">Monat</th>
                 <th className="text-right py-4 px-2 text-muted-foreground font-semibold text-sm">Basis (€)</th>
                 <th className="text-right py-4 px-2 text-muted-foreground font-semibold text-sm">Zusätzlich (€)</th>
@@ -228,7 +228,7 @@ export function MonthlyTable() {
                 return (
                   <tr 
                     key={index} 
-                    className={`border-b border-border/50 hover:bg-accent/30 transition-colors ${
+                    className={`border-b border-gray-300/50 hover:bg-accent/30 transition-colors ${
                       isCurrent ? 'bg-primary/10 border-primary/30' : ''
                     }`}
                   >
@@ -250,7 +250,7 @@ export function MonthlyTable() {
               })}
             </tbody>
             <tfoot>
-              <tr className="border-t-2 border-border">
+              <tr className="border-t-2 border-gray-300">
                 <td className="py-4 px-2 text-foreground font-bold">Gesamt (6 Monate)</td>
                 <td className="py-4 px-2 text-right text-muted-foreground font-semibold">
                   €{monthlyData.reduce((sum, row) => sum + row.baseCosts, 0).toLocaleString()}
@@ -279,7 +279,7 @@ export function MonthlyTable() {
         </div>
 
         {additionalCosts.length > 0 && (
-          <div className="mt-6 pt-6 border-t border-border">
+          <div className="mt-6 pt-6 border-t border-gray-300">
             <h4 className="text-sm font-semibold text-muted-foreground mb-3">Zusätzliche Kosten diesen Monat:</h4>
             <div className="space-y-2">
               {additionalCosts

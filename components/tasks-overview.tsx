@@ -63,7 +63,7 @@ export function TasksOverview() {
   }
 
   return (
-    <div className="bg-card rounded-xl p-6 border border-border">
+    <div className="bg-card rounded-xl p-6 border border-gray-300">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-xl font-bold text-foreground mb-2">Offene Aufgaben</h3>
@@ -94,7 +94,7 @@ export function TasksOverview() {
       ) : (
         <div className="space-y-6">
           {Object.entries(tasksByPerson).map(([person, personTasks]) => (
-            <div key={person} className="border border-border rounded-lg p-4">
+            <div key={person} className="border border-gray-300 rounded-lg p-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">

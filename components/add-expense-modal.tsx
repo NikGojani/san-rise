@@ -48,7 +48,7 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: AddExpenseModalProp
     <>
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-card rounded-xl p-6 max-w-md w-full mx-4 border border-border">
+          <div className="bg-card rounded-xl p-6 max-w-md w-full mx-4 border border-gray-300">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-foreground">Ausgabe hinzufügen</h2>
               <button
@@ -69,7 +69,7 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: AddExpenseModalProp
                   value={formData.title}
                   onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
                   placeholder="Ausgaben-Beschreibung"
-                  className="w-full px-3 py-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full px-3 py-2 bg-input border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
 
@@ -83,7 +83,7 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: AddExpenseModalProp
                   value={formData.amount}
                   onChange={(e) => setFormData((prev) => ({ ...prev, amount: e.target.value }))}
                   placeholder="0.00"
-                  className="w-full px-3 py-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full px-3 py-2 bg-input border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
 
@@ -95,7 +95,7 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: AddExpenseModalProp
                   required
                   value={formData.category}
                   onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value }))}
-                  className="w-full px-3 py-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full px-3 py-2 bg-input border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="">Kategorie wählen</option>
                   {categories.map((category) => (
@@ -113,7 +113,7 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: AddExpenseModalProp
                 <select
                   value={formData.type}
                   onChange={(e) => setFormData((prev) => ({ ...prev, type: e.target.value }))}
-                  className="w-full px-3 py-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full px-3 py-2 bg-input border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="einmalig">Einmalig</option>
                   <option value="monatlich">Monatlich</option>
@@ -130,7 +130,7 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: AddExpenseModalProp
                   required
                   value={formData.date}
                   onChange={(e) => setFormData((prev) => ({ ...prev, date: e.target.value }))}
-                  className="w-full px-3 py-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full px-3 py-2 bg-input border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
 
@@ -141,7 +141,7 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: AddExpenseModalProp
                   onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
                   placeholder="Zusätzliche Details..."
                   rows={3}
-                  className="w-full px-3 py-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full px-3 py-2 bg-input border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
             </div>

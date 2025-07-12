@@ -207,7 +207,7 @@ export function CostManagement() {
 
   if (loading) {
     return (
-      <div className="bg-card rounded-xl p-6 border border-border">
+      <div className="bg-card rounded-xl p-6 border border-gray-300">
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-accent rounded w-1/3"></div>
           <div className="space-y-2">
@@ -221,7 +221,7 @@ export function CostManagement() {
   }
 
   return (
-    <div className="bg-card rounded-xl p-6 border border-border">
+    <div className="bg-card rounded-xl p-6 border border-gray-300">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-xl font-semibold text-foreground">Kostenverwaltung</h3>
@@ -266,7 +266,7 @@ export function CostManagement() {
           </div>
         ) : (
           getFilteredCosts().map((cost) => (
-            <div key={cost.id} className="flex items-center justify-between p-4 bg-accent/10 rounded-lg border border-border">
+            <div key={cost.id} className="flex items-center justify-between p-4 bg-accent/10 rounded-lg border border-gray-300">
               <div className="flex-1">
                 <div className="flex items-center space-x-3 mb-2">
                   <h4 className="font-semibold text-foreground">{cost.name}</h4>
@@ -320,7 +320,7 @@ export function CostManagement() {
 
       {/* Add/Edit Modal */}
       <Dialog open={isAddModalOpen} onOpenChange={resetForm}>
-        <DialogContent className="bg-card border-border">
+        <DialogContent className="bg-card border-gray-300">
           <DialogHeader>
             <DialogTitle className="text-foreground">
               {selectedCost ? 'Kosten bearbeiten' : 'Neue Kosten hinzufügen'}
@@ -404,7 +404,7 @@ export function CostManagement() {
 
       {/* Delete Confirmation */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent className="bg-card border-border">
+        <DialogContent className="bg-card border-gray-300">
           <DialogHeader>
             <DialogTitle className="text-foreground">Kosten löschen</DialogTitle>
           </DialogHeader>
