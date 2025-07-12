@@ -1,16 +1,5 @@
 @import "tailwindcss";
 
-/*
-Supabase-Setup für dauerhafte Speicherung:
-1. Gehe auf https://app.supabase.com und erstelle ein kostenloses Projekt.
-2. Lege zwei Tabellen an: "mitarbeiter" und "vertragskosten" (siehe Supabase-UI).
-3. Kopiere die Project URL und den anon public key aus den Project Settings > API.
-4. Lege in deinem Projekt eine .env.local an:
-   NEXT_PUBLIC_SUPABASE_URL=deine_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=dein_key
-5. Starte das Projekt neu. Die App speichert und lädt jetzt alles aus Supabase!
-*/
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -28,10 +17,6 @@ Supabase-Setup für dauerhafte Speicherung:
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
-
-body, html {
-  background: #fff !important;
 }
 
 body {

@@ -14,7 +14,7 @@ export default function ConcertDetailPage({ params }: Props) {
   const id = params.id;
   const searchParams = useSearchParams();
   const router = useRouter();
-  const modus = searchParams?.get('modus') === 'heute' ? 'heute' : 'gesamt';
+  const modus = searchParams.get('modus') === 'heute' ? 'heute' : 'gesamt';
   const { concerts, updateConcertName } = useConcerts();
   const concert = concerts.find((c) => c.id === id);
 

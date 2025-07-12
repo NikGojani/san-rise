@@ -39,7 +39,7 @@ function getMitarbeiterkostenData() {
 }
 
 export default function KostenSeite() {
-  const [vertragsdaten, setVertragsdaten] = useState<any[]>([]);
+  const [vertragsdaten, setVertragsdaten] = useState([]);
   const [mitarbeiterkosten, setMitarbeiterkosten] = useState(0);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function KostenSeite() {
   };
 
   // Kostenübersicht nächste 6 Monate
-  function isVertragAktivImMonat(vertrag: any, monat: any) {
+  function isVertragAktivImMonat(vertrag, monat) {
     if (!vertrag.start && !vertrag.ende) return true;
     const start = vertrag.start ? dayjs(vertrag.start) : null;
     const ende = vertrag.ende ? dayjs(vertrag.ende) : null;

@@ -459,7 +459,7 @@ export default function Calculator() {
               <h1 className="text-4xl font-bold text-foreground mb-3">Kostenrechner</h1>
               <p className="text-muted-foreground text-lg">Event-basierte Kostenplanung und Gewinnberechnung</p>
             </div>
-            <div className="bg-card rounded-lg p-6 border border-gray-300">
+            <div className="bg-card rounded-lg p-6 border border-border">
               <div className="animate-pulse space-y-4">
                 {[...Array(3)].map((_, i) => (
                   <div key={i} className="h-16 bg-muted rounded"></div>
@@ -507,7 +507,7 @@ export default function Calculator() {
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-4">Events</h2>
             {events.length === 0 ? (
-              <div className="bg-card rounded-lg p-8 border border-gray-300 text-center">
+              <div className="bg-card rounded-lg p-8 border border-border text-center">
                 <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-foreground mb-2">Keine Events vorhanden</h3>
                 <p className="text-muted-foreground mb-4">Erstellen Sie Ihr erstes Event um mit der Kostenplanung zu beginnen.</p>
@@ -530,7 +530,7 @@ export default function Calculator() {
                   const monthlyRevenue = calculateEventMonthlyRevenue(event)
                   
                   return (
-                    <div key={event.id} className="bg-card rounded-lg p-6 border border-gray-300 hover:shadow-lg transition-shadow">
+                    <div key={event.id} className="bg-card rounded-lg p-6 border border-border hover:shadow-lg transition-shadow">
                       <div className="flex items-start justify-between mb-4">
                         <div>
                           <h3 className="text-lg font-semibold text-foreground">{event.name}</h3>
@@ -568,7 +568,7 @@ export default function Calculator() {
                             {formatValue(profit)} €
                           </span>
                         </div>
-                        <div className="flex justify-between items-center border-t border-gray-300 pt-3">
+                        <div className="flex justify-between items-center border-t border-border pt-3">
                           <span className="font-semibold text-foreground">Gewinn für alle Termine:</span>
                           <span className={`font-bold text-lg ${getValueColorClass(monthlyRevenue)}`}>
                             {formatValue(monthlyRevenue)} €
@@ -579,7 +579,7 @@ export default function Calculator() {
                       </div>
                       
                       {event.description && (
-                        <p className="text-sm text-muted-foreground mt-3 border-t border-gray-300 pt-3">
+                        <p className="text-sm text-muted-foreground mt-3 border-t border-border pt-3">
                           {event.description}
                         </p>
                       )}
@@ -594,7 +594,7 @@ export default function Calculator() {
           {events.length > 0 && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* PRO MONAT */}
-              <div className="bg-card rounded-xl p-6 border border-gray-300">
+              <div className="bg-card rounded-xl p-6 border border-border">
                 <h2 className="text-2xl font-bold text-center text-foreground mb-4">PRO MONAT</h2>
                 
                 {/* Monat und Jahr Auswahl */}
@@ -678,7 +678,7 @@ export default function Calculator() {
                         type="number"
                         value={monthlyFixedCosts.steuerberater}
                         onChange={(e) => handleUpdateFixedCosts("steuerberater", Number(e.target.value))}
-                        className="w-20 px-1 py-1 bg-input border border-gray-300 rounded text-foreground text-xs"
+                        className="w-20 px-1 py-1 bg-input border border-border rounded text-foreground text-xs"
                       />
                     </div>
                     <div className="flex justify-between items-center">
@@ -688,7 +688,7 @@ export default function Calculator() {
                           type="number"
                           value={monthlyFixedCosts.steuern}
                           onChange={(e) => handleUpdateFixedCosts("steuern", Number(e.target.value))}
-                          className="w-16 px-1 py-1 bg-input border border-gray-300 rounded text-foreground text-xs"
+                          className="w-16 px-1 py-1 bg-input border border-border rounded text-foreground text-xs"
                         />
                         <span className="text-xs text-muted-foreground">%</span>
                         <span className="text-foreground text-sm ml-2">{formatValue(calculations.selectedMonthTaxAmount)} €</span>
@@ -703,7 +703,7 @@ export default function Calculator() {
               </div>
 
               {/* PRO JAHR */}
-              <div className="bg-card rounded-xl p-6 border border-gray-300">
+              <div className="bg-card rounded-xl p-6 border border-border">
                 <h2 className="text-2xl font-bold text-center text-foreground mb-4">PRO JAHR</h2>
                 
                 {/* Jahr Auswahl */}

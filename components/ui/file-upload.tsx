@@ -30,6 +30,7 @@ export function FileUpload({
   className = '',
 }: FileUploadProps) {
   const [isUploading, setIsUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -50,6 +51,7 @@ export function FileUpload({
 
     try {
       setIsUploading(true)
+      setUploadProgress(0)
 
       // Generiere einen eindeutigen Dateinamen
       const timestamp = new Date().getTime()
@@ -58,12 +60,16 @@ export function FileUpload({
       const fileName = `${timestamp}-${randomString}-${sanitizedFileName}`
       const filePath = `${folder}/${fileName}`
 
-      // Upload zur Supabase Storage
+      // Upload zur Supabase Storage mit Fortschrittsanzeige
       const { data, error } = await supabase.storage
         .from(bucketName)
         .upload(filePath, file, {
           cacheControl: '3600',
           upsert: false,
+          onUploadProgress: (progress) => {
+            const percentage = (progress.loaded / progress.total) * 100
+            setUploadProgress(Math.round(percentage))
+          },
         })
 
       if (error) {
@@ -82,6 +88,7 @@ export function FileUpload({
       toast.error(error.message || 'Fehler beim Hochladen der Datei')
     } finally {
       setIsUploading(false)
+      setUploadProgress(0)
       // Reset das Input-Feld
       e.target.value = ''
     }
@@ -114,7 +121,7 @@ export function FileUpload({
             <div className="flex items-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin" />
               <span className="text-sm text-muted-foreground">
-                Lädt...
+                {uploadProgress}%
               </span>
             </div>
           )}
@@ -123,7 +130,7 @@ export function FileUpload({
         {existingFiles.length > 0 && (
           <ul className="space-y-2">
             {existingFiles.map((file, index) => (
-              <li key={index} className="flex items-center justify-between gap-2 rounded-md border border-gray-300 p-2">
+              <li key={index} className="flex items-center justify-between gap-2 rounded-md border border-border p-2">
                 <a
                   href={file.url}
                   target="_blank"

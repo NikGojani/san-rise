@@ -178,7 +178,7 @@ export default function KostenTool() {
   }, []);
 
   function handleChange(key: keyof typeof data, value: string) {
-    setData((d: any) => {
+    setData(d => {
       const updated = { ...d, [key]: Number(value) };
       if (typeof window !== 'undefined') {
         window.localStorage.setItem('kostenToolData', JSON.stringify(updated));

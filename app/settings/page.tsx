@@ -66,7 +66,7 @@ export default function Settings() {
       gemaPercentage: 9,
       currency: 'EUR',
       logoUrl: '',
-      logoText: 'SAN RISE GMBH',
+      logoText: '',
       profitDistribution: {
         nik: 31.5,
         adrian: 31.5,
@@ -85,21 +85,20 @@ export default function Settings() {
         
         if (data) {
           reset({
-            companyName: data.companyName || 'SAN RISE GMBH',
-            gemaPercentage: data.gemaPercentage || 9,
-            currency: data.currency || 'EUR',
+            companyName: data.companyName,
+            gemaPercentage: data.gemaPercentage,
+            currency: data.currency,
             logoUrl: data.logoUrl || '',
-            logoText: data.logoText || 'SAN RISE GMBH',
+            logoText: data.logoText || '',
             profitDistribution: {
-              nik: data.nikPercentage || 31.5,
-              adrian: data.adrianPercentage || 31.5,
-              sebastian: data.sebastianPercentage || 17,
-              mexify: data.mexifyPercentage || 20,
+              nik: data.nikPercentage,
+              adrian: data.adrianPercentage,
+              sebastian: data.sebastianPercentage,
+              mexify: data.mexifyPercentage,
             },
           })
         }
       } catch (error) {
-        console.error('Fehler beim Laden der Einstellungen:', error)
         toast.error('Fehler beim Laden der Einstellungen')
       }
     }
@@ -117,14 +116,12 @@ export default function Settings() {
       })
 
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Fehler beim Speichern der Einstellungen')
+        throw new Error('Fehler beim Speichern der Einstellungen')
       }
 
       toast.success('Einstellungen wurden erfolgreich gespeichert')
     } catch (error) {
-      console.error('Fehler beim Speichern der Einstellungen:', error)
-      toast.error(error instanceof Error ? error.message : 'Fehler beim Speichern der Einstellungen')
+      toast.error('Fehler beim Speichern der Einstellungen')
     } finally {
       setIsLoading(false)
     }
@@ -139,7 +136,7 @@ export default function Settings() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Logo-Einstellungen */}
-        <div className="bg-card rounded-lg p-6 border border-gray-300">
+        <div className="bg-card rounded-lg p-6 border border-border">
           <h3 className="text-lg font-semibold text-foreground mb-4">Logo-Einstellungen (Optional)</h3>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="space-y-4">
@@ -149,7 +146,7 @@ export default function Settings() {
                   {...register('logoUrl')}
                   type="url"
                   placeholder="https://example.com/logo.png"
-                  className="w-full px-3 py-2 bg-background border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
                   URL zu Ihrem transparenten Logo (PNG empfohlen). Wenn leer, wird nur der Text verwendet.
@@ -163,8 +160,8 @@ export default function Settings() {
                 <input
                   {...register('logoText')}
                   type="text"
-                  placeholder="SAN RISE GMBH"
-                  className="w-full px-3 py-2 bg-background border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  placeholder="Firmenname (falls abweichend)"
+                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
                   Überschreibt den Firmennamen in der Navigation. Wenn leer, wird der Firmenname verwendet.
@@ -175,9 +172,9 @@ export default function Settings() {
               </div>
             </div>
             
-            <div className="bg-muted/30 rounded-lg p-4 border border-gray-300">
+            <div className="bg-muted/30 rounded-lg p-4 border border-border">
               <h4 className="text-sm font-medium text-foreground mb-3">Vorschau</h4>
-              <div className="bg-card rounded-lg p-4 border border-gray-300">
+              <div className="bg-card rounded-lg p-4 border border-border">
                 <LogoPreview control={control} />
               </div>
             </div>
@@ -185,7 +182,7 @@ export default function Settings() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-card rounded-lg p-6 border border-gray-300">
+          <div className="bg-card rounded-lg p-6 border border-border">
             <h3 className="text-lg font-semibold text-foreground mb-4">Allgemeine Einstellungen</h3>
             <div className="space-y-4">
               <div>
@@ -193,7 +190,7 @@ export default function Settings() {
                 <input
                   {...register('companyName')}
                   type="text"
-                  className="w-full px-3 py-2 bg-background border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 {errors.companyName && (
                   <p className="text-destructive text-sm mt-1">{errors.companyName.message}</p>
@@ -204,7 +201,7 @@ export default function Settings() {
                 <input
                   {...register('gemaPercentage', { valueAsNumber: true })}
                   type="number"
-                  className="w-full px-3 py-2 bg-background border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 {errors.gemaPercentage && (
                   <p className="text-destructive text-sm mt-1">{errors.gemaPercentage.message}</p>
@@ -214,7 +211,7 @@ export default function Settings() {
                 <label className="block text-sm font-medium text-foreground mb-2">Währung</label>
                 <select
                   {...register('currency')}
-                  className="w-full px-3 py-2 bg-background border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="EUR">Euro (€)</option>
                   <option value="USD">US Dollar ($)</option>
@@ -227,7 +224,7 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="bg-card rounded-lg p-6 border border-gray-300">
+          <div className="bg-card rounded-lg p-6 border border-border">
             <h3 className="text-lg font-semibold text-foreground mb-4">Gewinnverteilung</h3>
             <div className="space-y-4">
               <div>
@@ -236,7 +233,7 @@ export default function Settings() {
                   {...register('profitDistribution.nik', { valueAsNumber: true })}
                   type="number"
                   step="0.1"
-                  className="w-full px-3 py-2 bg-background border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
               <div>
@@ -245,7 +242,7 @@ export default function Settings() {
                   {...register('profitDistribution.adrian', { valueAsNumber: true })}
                   type="number"
                   step="0.1"
-                  className="w-full px-3 py-2 bg-background border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
               <div>
@@ -254,7 +251,7 @@ export default function Settings() {
                   {...register('profitDistribution.sebastian', { valueAsNumber: true })}
                   type="number"
                   step="0.1"
-                  className="w-full px-3 py-2 bg-background border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
               <div>
@@ -263,7 +260,7 @@ export default function Settings() {
                   {...register('profitDistribution.mexify', { valueAsNumber: true })}
                   type="number"
                   step="0.1"
-                  className="w-full px-3 py-2 bg-background border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
               {errors.profitDistribution && (

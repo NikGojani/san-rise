@@ -205,7 +205,7 @@ export function DashboardStats() {
         {stats.map((stat) => (
           <div
             key={stat.name}
-            className="bg-card rounded-xl p-8 border border-gray-300 hover:border-accent transition-all duration-200"
+            className="bg-card rounded-xl p-8 border border-border hover:border-accent transition-all duration-200"
           >
             <div className="flex items-start justify-between mb-6">
               <div className="flex-1 min-w-0">

@@ -70,7 +70,7 @@ export function CostChart() {
 
   if (loading) {
     return (
-      <div className="bg-card rounded-xl p-8 border border-gray-300">
+      <div className="bg-card rounded-xl p-8 border border-border">
         <h3 className="text-xl font-semibold text-foreground mb-6">Kostenverteilung (Monatlich)</h3>
         <div className="h-80 flex items-center justify-center">
           <div className="text-muted-foreground">Lade Kostendaten...</div>
@@ -83,7 +83,7 @@ export function CostChart() {
   const totalCosts = data.reduce((total, item) => total + item.value, 0)
 
   return (
-    <div className="bg-card rounded-xl p-8 border border-gray-300">
+    <div className="bg-card rounded-xl p-8 border border-border">
       <h3 className="text-xl font-semibold text-foreground mb-6">Monatliche Kosten</h3>
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
@@ -131,7 +131,7 @@ export function CostChart() {
       </div>
       
       {/* Gesamtsumme */}
-      <div className="mt-6 pt-6 border-t border-gray-300">
+      <div className="mt-6 pt-6 border-t border-border">
         <div className="bg-primary/10 rounded-lg p-4 text-center">
           <div className="text-sm text-muted-foreground mb-1">Gesamtkosten pro Monat</div>
           <div className="text-2xl font-bold text-primary">€{totalCosts.toLocaleString()}</div>

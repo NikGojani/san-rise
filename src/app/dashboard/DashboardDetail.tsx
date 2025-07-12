@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useRouter } from 'next/navigation';
 import { saveAs } from 'file-saver';
-import { PencilSquareIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -113,6 +113,11 @@ const spendConversionDataSets: Record<string, { labels: string[]; datasets: { la
   },
 };
 
+const zeitraumOptions = [
+  { value: '7', label: 'Letzte 7 Tage' },
+  { value: '30', label: 'Letzte 30 Tage' },
+];
+
 const kalenderEvents = [
   {
     woche: 'KW 24',
@@ -147,6 +152,7 @@ function shareholderName(name: string) {
 
 export default function DashboardDetail({ concert, modus = 'gesamt', updateConcertName }: DashboardDetailProps) {
   const router = useRouter();
+  const [zeitraum, setZeitraum] = useState('7');
   const [showKosten, setShowKosten] = useState(false);
   const [kuenstler, setKuenstler] = useState(1000);
   const [location, setLocation] = useState(5000);
@@ -190,9 +196,6 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
   const [extraKosten, setExtraKosten] = useState<{ name: string; value: number }[]>([]);
   const [newKostenName, setNewKostenName] = useState('');
   const [newKostenValue, setNewKostenValue] = useState('');
-  const [showSettings, setShowSettings] = useState(false);
-  const [shopifyApiKey, setShopifyApiKey] = useState('');
-  const [metaApiKey, setMetaApiKey] = useState('');
 
   // metaAds.budget ist der aktuelle Marketingwert (Dummy, später API)
   const marketing = metaAds.budget;
@@ -368,15 +371,27 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
           <div className="bg-gray-100 rounded-lg p-4 shadow flex-1 flex flex-col justify-between min-h-[170px] w-full">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-lg font-semibold">Spend / Conversion</h2>
+              <select
+                className="bg-gray-200 text-gray-900 rounded px-2 py-1 text-sm border border-gray-300 focus:outline-none"
+                value={zeitraum}
+                onChange={e => setZeitraum(e.target.value)}
+              >
+                {zeitraumOptions.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
             </div>
             <div className="h-40">
               <Line data={{
-                ...spendConversionDataSets['7'],
-                datasets: spendConversionDataSets['7'].datasets.map(ds => ({
+                ...spendConversionDataSets[zeitraum],
+                datasets: spendConversionDataSets[zeitraum].datasets.map(ds => ({
                   ...ds,
                   data: Array(10).fill(64),
                 })),
               }} options={chartOptionsWhite} />
+            </div>
+            <div className="mt-1 text-gray-500 text-xs">
+              Zeitraum: {zeitraumOptions.find(opt => opt.value === zeitraum)?.label}
             </div>
           </div>
           {/* Umsatz-Box */}
@@ -573,70 +588,6 @@ export default function DashboardDetail({ concert, modus = 'gesamt', updateConce
           })}
         </div>
       </div>
-
-      {/* Einstellungsmenü */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <button
-          onClick={() => setShowSettings(!showSettings)}
-          className="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition-all"
-        >
-          <Cog6ToothIcon className="w-6 h-6" />
-        </button>
-      </div>
-
-      {showSettings && (
-        <div className="fixed inset-0 bg-[#f5f5f7]/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-            <h3 className="text-lg font-bold text-gray-800 mb-4">API-Einstellungen</h3>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Shopify API Key</label>
-                <input
-                  type="password"
-                  value={shopifyApiKey}
-                  onChange={(e) => setShopifyApiKey(e.target.value)}
-                  className="w-full bg-gray-100 rounded-lg px-3 py-2 text-sm border-none outline-none"
-                  placeholder="Shopify API Key eingeben"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Meta API Key</label>
-                <input
-                  type="password"
-                  value={metaApiKey}
-                  onChange={(e) => setMetaApiKey(e.target.value)}
-                  className="w-full bg-gray-100 rounded-lg px-3 py-2 text-sm border-none outline-none"
-                  placeholder="Meta API Key eingeben"
-                />
-              </div>
-
-              <div className="text-xs text-gray-500">
-                Diese API-Keys werden für die Integration mit Shopify (Ticketverkauf) und Meta (Werbekennzahlen) verwendet.
-              </div>
-            </div>
-
-            <div className="flex gap-3 mt-6">
-              <button
-                onClick={() => setShowSettings(false)}
-                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200"
-              >
-                Schließen
-              </button>
-              <button
-                onClick={() => {
-                  // Hier später: API-Keys speichern und testen
-                  setShowSettings(false);
-                }}
-                className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600"
-              >
-                Speichern
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 } 
