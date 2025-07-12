@@ -192,7 +192,7 @@ export default function MitarbeiterSeite() {
             {successMsg && <div className="text-green-600 font-semibold mt-2 mb-2">{successMsg}</div>}
           </div>
         ) : (
-          <button className="bg-blue-500 text-white rounded-xl px-6 py-3 font-semibold shadow hover:bg-blue-600 transition text-base mb-4" onClick={() => setEdit({ name: '', geburtsdatum: '', adresse: '', einstellungsdatum: '', position: '', brutto: '', netto: '' })}>Mitarbeiter anlegen</button>
+          <button className="bg-blue-500 text-white rounded-xl px-6 py-3 font-semibold shadow hover:bg-blue-600 transition text-base mb-4" onClick={() => setEdit({ id: '', name: '', geburtsdatum: '', adresse: '', einstellungsdatum: '', position: '', brutto: '', netto: '' })}>Mitarbeiter anlegen</button>
         )}
         
         {/* Übersicht */}
