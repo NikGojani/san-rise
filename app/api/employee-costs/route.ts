@@ -1,24 +1,30 @@
 import { NextResponse } from 'next/server'
+import { supabase } from '@/lib/supabase'
+
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
-    // Lade die aktuellen Mitarbeiterdaten von der Mitarbeiter-API
-    const response = await fetch('/api/employees', {
-      cache: 'no-store'
-    })
-    
-    if (!response.ok) {
-      throw new Error('Fehler beim Laden der Mitarbeiter')
+    // Lade die Mitarbeiterdaten direkt von Supabase
+    const { data: allEmployees, error } = await supabase
+      .from('employees')
+      .select('*')
+
+    if (error) {
+      throw error
     }
-    
-    const allEmployees = await response.json()
-    
+
     // Filtere nur aktive Mitarbeiter für Kostenberechnung
-    const activeEmployees = allEmployees.filter((employee: any) => employee.isActive)
+    const activeEmployees = allEmployees.filter(employee => employee.is_active)
     
     // Berechne Gesamtmonatskosten nur für aktive Mitarbeiter
-    const totalMonthlyCosts = activeEmployees.reduce((total: number, employee: any) => {
-      return total + employee.totalMonthlyCosts
+    const totalMonthlyCosts = activeEmployees.reduce((total, employee) => {
+      const grossSalary = employee.brutto || 0
+      const additionalCostsPercentage = employee.additional_cc || 0
+      const additionalCosts = (grossSalary * additionalCostsPercentage) / 100
+      const totalMonthlyCost = grossSalary + additionalCosts
+
+      return total + totalMonthlyCost
     }, 0)
 
     return NextResponse.json({
@@ -26,12 +32,12 @@ export async function GET() {
       employeeCount: activeEmployees.length,
       totalEmployees: allEmployees.length,
       inactiveEmployees: allEmployees.length - activeEmployees.length,
-      breakdown: activeEmployees.map((emp: any) => ({
+      breakdown: activeEmployees.map(emp => ({
         name: emp.name,
-        grossSalary: emp.grossSalary,
-        additionalCosts: emp.additionalCosts,
-        additionalCostsPercentage: emp.additionalCostsPercentage,
-        totalCost: emp.totalMonthlyCosts
+        grossSalary: emp.brutto || 0,
+        additionalCosts: ((emp.brutto || 0) * (emp.additional_cc || 0)) / 100,
+        additionalCostsPercentage: emp.additional_cc || 0,
+        totalCost: (emp.brutto || 0) + ((emp.brutto || 0) * (emp.additional_cc || 0)) / 100
       }))
     })
   } catch (error) {

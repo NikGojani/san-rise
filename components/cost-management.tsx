@@ -22,6 +22,15 @@ interface AdditionalCost {
   attachments?: any[]
 }
 
+interface FormData {
+  name: string
+  description?: string
+  amount: number
+  type: 'one-time' | 'monthly' | 'yearly'
+  category: string
+  date: string
+}
+
 export function CostManagement() {
   const { hasPermission } = useAuth()
   const [costs, setCosts] = useState<AdditionalCost[]>([])
@@ -31,13 +40,13 @@ export function CostManagement() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [selectedMonth, setSelectedMonth] = useState<string>(new Date().toISOString().slice(0, 7))
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     description: "",
     amount: 0,
-    type: "one-time" as "one-time" | "monthly" | "yearly",
+    type: "one-time",
     category: "",
-    date: new Date().toISOString().slice(0, 10)
+    date: new Date().toISOString().split('T')[0],
   })
 
   const canEdit = hasPermission('edit_contracts')
@@ -95,15 +104,15 @@ export function CostManagement() {
   }
 
   const handleEdit = (cost: AdditionalCost) => {
-    setSelectedCost(cost)
     setFormData({
       name: cost.name,
-      description: cost.description,
+      description: cost.description || '',
       amount: cost.amount,
       type: cost.type,
       category: cost.category,
-      date: cost.date
+      date: cost.date,
     })
+    setSelectedCost(cost)
     setIsAddModalOpen(true)
   }
 
@@ -137,7 +146,7 @@ export function CostManagement() {
       amount: 0,
       type: "one-time",
       category: "",
-      date: new Date().toISOString().slice(0, 10)
+      date: new Date().toISOString().split('T')[0],
     })
     setSelectedCost(null)
     setIsAddModalOpen(false)

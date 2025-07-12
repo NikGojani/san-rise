@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
-import type { AdditionalCost } from '@/lib/schemas/additional-cost'
+import { additionalCostSchema, type AdditionalCost } from '@/lib/schemas/additional-cost'
 
 export async function GET() {
   try {
@@ -41,11 +41,43 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const newCost = await request.json()
+    const body = await request.json()
+    
+    // Validiere die eingehenden Daten mit Zod
+    const validationResult = additionalCostSchema.safeParse(body)
+    
+    if (!validationResult.success) {
+      console.error('Validation error:', validationResult.error)
+      return NextResponse.json(
+        { error: 'Ungültige Eingabedaten', details: validationResult.error.errors },
+        { status: 400 }
+      )
+    }
+
+    const newCost = validationResult.data
+    
+    // Validiere die Anhänge
+    if (newCost.attachments?.length > 0) {
+      for (const attachment of newCost.attachments) {
+        if (!attachment.url || !attachment.url.startsWith(process.env.NEXT_PUBLIC_SUPABASE_URL!)) {
+          return NextResponse.json(
+            { error: 'Ungültige Datei-URL' },
+            { status: 400 }
+          )
+        }
+      }
+    }
+    
+    // Stelle sicher, dass numerische Werte als Zahlen gespeichert werden
+    const dbCost = {
+      ...newCost,
+      amount: Number(newCost.amount),
+      attachments: newCost.attachments || [],
+    }
     
     const { data, error } = await supabase
       .from('additional_costs')
-      .insert([newCost])
+      .insert([dbCost])
       .select()
       .single()
 
@@ -57,7 +89,19 @@ export async function POST(request: Request) {
       )
     }
 
-    return NextResponse.json(data)
+    // Konvertiere zurück zum AdditionalCost-Format
+    const savedCost: AdditionalCost = {
+      id: data.id,
+      name: data.name,
+      amount: Number(data.amount),
+      category: data.category,
+      type: data.type,
+      date: data.date,
+      description: data.description || undefined,
+      attachments: data.attachments || [],
+    }
+
+    return NextResponse.json(savedCost)
   } catch (error) {
     console.error('Error saving additional cost:', error)
     return NextResponse.json(
@@ -69,20 +113,48 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const body = await request.json()
-    const costs = await loadAdditionalCosts()
+    const updatedCost = await request.json()
     
-    const index = costs.findIndex(cost => cost.id === body.id)
-    if (index === -1) {
-      return NextResponse.json({ error: 'Kosten nicht gefunden' }, { status: 404 })
+    if (!updatedCost.id) {
+      return NextResponse.json(
+        { error: 'Kosten-ID erforderlich' },
+        { status: 400 }
+      )
     }
+
+    // Validiere die eingehenden Daten mit Zod
+    const validationResult = additionalCostSchema.safeParse(updatedCost)
     
-    costs[index] = { ...costs[index], ...body }
-    await saveAdditionalCosts(costs)
-    
-    return NextResponse.json(costs[index])
+    if (!validationResult.success) {
+      console.error('Validation error:', validationResult.error)
+      return NextResponse.json(
+        { error: 'Ungültige Eingabedaten', details: validationResult.error.errors },
+        { status: 400 }
+      )
+    }
+
+    const { data, error } = await supabase
+      .from('additional_costs')
+      .update(updatedCost)
+      .eq('id', updatedCost.id)
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Supabase error:', error)
+      return NextResponse.json(
+        { error: 'Fehler beim Aktualisieren der Kosten' },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json(data)
   } catch (error) {
-    return NextResponse.json({ error: 'Fehler beim Aktualisieren der Kosten' }, { status: 500 })
+    console.error('Error updating cost:', error)
+    return NextResponse.json(
+      { error: 'Fehler beim Aktualisieren der Kosten' },
+      { status: 500 }
+    )
   }
 }
 
@@ -90,22 +162,33 @@ export async function DELETE(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
-    
+
     if (!id) {
-      return NextResponse.json({ error: 'ID ist erforderlich' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Keine ID angegeben' },
+        { status: 400 }
+      )
     }
-    
-    const costs = await loadAdditionalCosts()
-    const filteredCosts = costs.filter(cost => cost.id !== id)
-    
-    if (filteredCosts.length === costs.length) {
-      return NextResponse.json({ error: 'Kosten nicht gefunden' }, { status: 404 })
+
+    const { error } = await supabase
+      .from('additional_costs')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      console.error('Supabase error:', error)
+      return NextResponse.json(
+        { error: 'Fehler beim Löschen der zusätzlichen Kosten' },
+        { status: 500 }
+      )
     }
-    
-    await saveAdditionalCosts(filteredCosts)
-    
-    return NextResponse.json({ message: 'Kosten gelöscht' })
+
+    return NextResponse.json({ success: true })
   } catch (error) {
-    return NextResponse.json({ error: 'Fehler beim Löschen der Kosten' }, { status: 500 })
+    console.error('Error deleting additional cost:', error)
+    return NextResponse.json(
+      { error: 'Fehler beim Löschen der zusätzlichen Kosten' },
+      { status: 500 }
+    )
   }
 } 

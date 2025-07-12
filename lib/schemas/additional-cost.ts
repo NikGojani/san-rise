@@ -17,7 +17,9 @@ export const additionalCostSchema = z.object({
   })).optional().default([]),
 })
 
-export type AdditionalCost = z.infer<typeof additionalCostSchema>
+export type AdditionalCost = z.infer<typeof additionalCostSchema> & {
+  id: string
+}
 
 // Hilfsfunktionen für Berechnungen
 export function calculateMonthlyCostImpact(cost: AdditionalCost, targetMonth: Date): number {

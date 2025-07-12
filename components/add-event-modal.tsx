@@ -33,42 +33,38 @@ const eventSchema = z.object({
 
 type EventFormData = z.infer<typeof eventSchema>
 
-interface AddEventModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onEventAdded: (event: AppEvent) => void
+export interface AddEventModalProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onEventAdded: (event: any) => void
   editEvent?: AppEvent
 }
 
-export function AddEventModal({ isOpen, onClose, onEventAdded, editEvent }: AddEventModalProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [attachments, setAttachments] = useState<Array<{ name: string; url: string }>>([])
-
-  const handleFileUpload = (fileUrl: string, fileName: string) => {
-    setAttachments(prev => [...prev, { name: fileName, url: fileUrl }])
-  }
-
-  const handleFileRemove = (fileName: string) => {
-    setAttachments(prev => prev.filter(att => att.name !== fileName))
-  }
-
-  const { register, handleSubmit, formState: { errors }, watch, setValue, reset } = useForm<EventFormData>({
-    resolver: zodResolver(eventSchema),
-    defaultValues: editEvent ? {
-      name: editEvent.name,
-      description: editEvent.description || '',
-      location: editEvent.location || '',
-      date: editEvent.date,
-      startTime: editEvent.startTime || '',
-      endTime: editEvent.endTime || '',
-      status: editEvent.status,
-      price: editEvent.price,
-      maxTickets: editEvent.maxTickets,
-      termine: editEvent.termine || 2,
-      ticketsSold: editEvent.ticketsSold,
-      syncWithShopify: editEvent.syncWithShopify,
-      imageUrl: editEvent.imageUrl || '',
-    } : {
+export function AddEventModal({
+  open,
+  onOpenChange,
+  onEventAdded,
+  editEvent
+}: AddEventModalProps) {
+  const [formData, setFormData] = useState<EventFormData>(() => {
+    if (editEvent) {
+      return {
+        name: editEvent.name,
+        description: editEvent.description || '',
+        location: editEvent.location || '',
+        date: editEvent.date,
+        startTime: editEvent.startTime || '',
+        endTime: editEvent.endTime || '',
+        status: editEvent.status || 'upcoming',
+        maxTickets: editEvent.maxTickets || 100,
+        price: editEvent.price || 0,
+        ticketsSold: editEvent.ticketsSold || 0,
+        termine: editEvent.termine || 1,
+        syncWithShopify: editEvent.syncWithShopify || false,
+        imageUrl: editEvent.imageUrl || '',
+      }
+    }
+    return {
       name: '',
       description: '',
       location: '',
@@ -76,342 +72,171 @@ export function AddEventModal({ isOpen, onClose, onEventAdded, editEvent }: AddE
       startTime: '',
       endTime: '',
       status: 'upcoming',
+      maxTickets: 100,
       price: 0,
-      maxTickets: 400,
-      termine: 2,
       ticketsSold: 0,
+      termine: 1,
       syncWithShopify: false,
       imageUrl: '',
-    },
+    }
   })
 
-  const price = watch('price')
-  const ticketsSold = watch('ticketsSold')
-  const termine = watch('termine')
-  const syncWithShopify = watch('syncWithShopify')
-  
-  // Automatische Berechnung
-  const revenue = price * ticketsSold // ticketsSold ist bereits die Gesamtzahl
-  const profit = revenue // Expenses werden im Calculator berechnet
-
-  const handleStatusChange = (value: string) => {
-    setValue('status', value as AppEvent['status'])
-  }
-
-  const onSubmit = async (data: EventFormData) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
     try {
-      setIsLoading(true)
-      
-      // Automatische Berechnung von Revenue und Profit
-      const calculatedRevenue = data.price * data.ticketsSold // ticketsSold ist bereits die Gesamtzahl
-      
-      const eventData: Partial<AppEvent> = {
-        ...data,
-        revenue: calculatedRevenue,
-        expenses: 0, // Wird später im Calculator berechnet
-        profit: calculatedRevenue, // Wird später im Calculator neu berechnet
-      }
-
       const response = await fetch('/api/events', {
-        method: editEvent ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editEvent ? { ...eventData, id: editEvent.id } : eventData),
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       })
 
       if (!response.ok) {
-        throw new Error('Fehler beim Speichern des Events')
+        throw new Error('Fehler beim Erstellen des Events')
       }
 
-      const savedEvent: AppEvent = await response.json()
-      onEventAdded(savedEvent)
-      reset()
-      onClose()
-      toast.success(editEvent ? 'Event wurde erfolgreich aktualisiert' : 'Event wurde erfolgreich hinzugefügt')
+      const newEvent = await response.json()
+      onEventAdded(newEvent)
+      onOpenChange(false)
+      toast.success('Event wurde erfolgreich erstellt')
     } catch (error) {
-      toast.error(editEvent ? 'Fehler beim Aktualisieren des Events' : 'Fehler beim Hinzufügen des Events')
-    } finally {
-      setIsLoading(false)
+      console.error('Error creating event:', error)
+      toast.error('Fehler beim Erstellen des Events')
     }
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>{editEvent ? 'Event bearbeiten' : 'Neues Event hinzufügen'}</DialogTitle>
+          <DialogTitle>Neues Event erstellen</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Basis Event Informationen */}
+        <form onSubmit={handleSubmit}>
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Event Details</h3>
-            
-            <div className="space-y-2">
-              <Label htmlFor="name">Event-Name *</Label>
+            <div>
+              <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
-                {...register('name')}
-                placeholder="z.B. Summer Festival 2024"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="Event Name"
               />
-              {errors.name && (
-                <p className="text-destructive text-sm">{errors.name.message}</p>
-              )}
             </div>
-
-            <div className="space-y-2">
+            <div>
               <Label htmlFor="description">Beschreibung</Label>
               <Textarea
                 id="description"
-                {...register('description')}
-                placeholder="Beschreibung des Events..."
-                rows={3}
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                placeholder="Event Beschreibung"
               />
-              {errors.description && (
-                <p className="text-destructive text-sm">{errors.description.message}</p>
-              )}
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="location">Veranstaltungsort</Label>
+            <div>
+              <Label htmlFor="location">Ort</Label>
               <Input
                 id="location"
-                {...register('location')}
-                placeholder="z.B. Stadtpark Berlin"
+                value={formData.location}
+                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                placeholder="Event Ort"
               />
-              {errors.location && (
-                <p className="text-destructive text-sm">{errors.location.message}</p>
-              )}
             </div>
-          </div>
-
-          {/* Datum & Zeit */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Datum & Zeit</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="date">Datum *</Label>
-                <Input
-                  id="date"
-                  type="date"
-                  {...register('date')}
-                />
-                {errors.date && (
-                  <p className="text-destructive text-sm">{errors.date.message}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="startTime">Start-Zeit</Label>
-                <Input
-                  id="startTime"
-                  type="time"
-                  {...register('startTime')}
-                />
-                {errors.startTime && (
-                  <p className="text-destructive text-sm">{errors.startTime.message}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="endTime">End-Zeit</Label>
-                <Input
-                  id="endTime"
-                  type="time"
-                  {...register('endTime')}
-                />
-                {errors.endTime && (
-                  <p className="text-destructive text-sm">{errors.endTime.message}</p>
-                )}
-              </div>
+            <div>
+              <Label htmlFor="date">Datum</Label>
+              <Input
+                id="date"
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              />
             </div>
-          </div>
-
-          {/* Status & Tickets */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Tickets & Status</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
-                <Select
-                  value={watch('status')}
-                  onValueChange={handleStatusChange}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="upcoming">Geplant</SelectItem>
-                    <SelectItem value="active">Aktiv</SelectItem>
-                    <SelectItem value="completed">Abgeschlossen</SelectItem>
-                    <SelectItem value="cancelled">Abgesagt</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.status && (
-                  <p className="text-destructive text-sm">{errors.status.message}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="price">Ticket-Preis (€)</Label>
-                <Input
-                  id="price"
-                  type="number"
-                  step="0.01"
-                  {...register('price', { valueAsNumber: true })}
-                  placeholder="45.00"
-                />
-                {errors.price && (
-                  <p className="text-destructive text-sm">{errors.price.message}</p>
-                )}
-              </div>
+            <div>
+              <Label htmlFor="startTime">Startzeit</Label>
+              <Input
+                id="startTime"
+                type="time"
+                value={formData.startTime}
+                onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+              />
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="maxTickets">Max. Tickets pro Termin</Label>
-                <Input
-                  id="maxTickets"
-                  type="number"
-                  {...register('maxTickets', { valueAsNumber: true })}
-                  placeholder="400"
-                />
-                {errors.maxTickets && (
-                  <p className="text-destructive text-sm">{errors.maxTickets.message}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="termine">Termine</Label>
-                <Input
-                  id="termine"
-                  type="number"
-                  {...register('termine', { valueAsNumber: true })}
-                  placeholder="2"
-                />
-                {errors.termine && (
-                  <p className="text-destructive text-sm">{errors.termine.message}</p>
-                )}
-                <p className="text-xs text-muted-foreground">Anzahl der Termine für dieses Event</p>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="ticketsSold">Tickets verkauft</Label>
-                <Input
-                  id="ticketsSold"
-                  type="number"
-                  {...register('ticketsSold', { valueAsNumber: true })}
-                  placeholder="0"
-                />
-                {errors.ticketsSold && (
-                  <p className="text-destructive text-sm">{errors.ticketsSold.message}</p>
-                )}
-              </div>
+            <div>
+              <Label htmlFor="endTime">Endzeit</Label>
+              <Input
+                id="endTime"
+                type="time"
+                value={formData.endTime}
+                onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+              />
             </div>
-
-            {/* Berechnung Anzeige */}
-            <div className="bg-muted/50 p-3 rounded-lg border">
-              <div className="text-sm space-y-1">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Tickets pro Termin:</span>
-                  <span className="font-medium">{watch('maxTickets') || 0}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Anzahl Termine:</span>
-                  <span className="font-medium">{watch('termine') || 0}</span>
-                </div>
-                <div className="flex justify-between border-t pt-1">
-                  <span className="font-medium">Tickets gesamt verfügbar:</span>
-                  <span className="font-bold text-primary">{(watch('maxTickets') || 0) * (watch('termine') || 0)}</span>
-                </div>
-              </div>
+            <div>
+              <Label htmlFor="status">Status</Label>
+              <Select
+                value={formData.status}
+                onValueChange={(value: 'upcoming' | 'active' | 'completed' | 'cancelled') =>
+                  setFormData({ ...formData, status: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Status wählen" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="upcoming">Bevorstehend</SelectItem>
+                  <SelectItem value="active">Aktiv</SelectItem>
+                  <SelectItem value="completed">Abgeschlossen</SelectItem>
+                  <SelectItem value="cancelled">Abgesagt</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          </div>
-
-          {/* Live-Finanzvorschau */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Live-Vorschau Umsatz</h3>
-            
-            <div className="bg-muted/50 p-4 rounded-lg border">
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Preis pro Ticket:</span>
-                  <span className="font-medium">€{price || 0}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Tickets verkauft:</span>
-                  <span className="font-medium">{ticketsSold || 0}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Anzahl Termine:</span>
-                  <span className="font-medium">{termine || 0}</span>
-                </div>
-                <div className="border-t pt-2 flex justify-between">
-                  <span className="font-bold text-foreground">Erwarteter Umsatz:</span>
-                  <span className="font-bold text-positive text-lg">
-                    €{revenue.toFixed(2)}
-                </span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Berechnung: {ticketsSold || 0} × €{price || 0} × {termine || 0} Termine
-                </p>
-              </div>
+            <div>
+              <Label htmlFor="maxTickets">Maximale Tickets</Label>
+              <Input
+                id="maxTickets"
+                type="number"
+                value={formData.maxTickets}
+                onChange={(e) => setFormData({ ...formData, maxTickets: parseInt(e.target.value) })}
+              />
             </div>
-          </div>
-
-          {/* Shopify Integration */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">E-Commerce Integration</h3>
-            
+            <div>
+              <Label htmlFor="price">Ticketpreis</Label>
+              <Input
+                id="price"
+                type="number"
+                value={formData.price}
+                onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="termine">Anzahl Termine</Label>
+              <Input
+                id="termine"
+                type="number"
+                value={formData.termine}
+                onChange={(e) => setFormData({ ...formData, termine: parseInt(e.target.value) })}
+              />
+            </div>
             <div className="flex items-center space-x-2">
               <Switch
                 id="syncWithShopify"
-                checked={syncWithShopify}
-                onCheckedChange={(checked) => setValue('syncWithShopify', checked)}
+                checked={formData.syncWithShopify}
+                onCheckedChange={(checked) =>
+                  setFormData({ ...formData, syncWithShopify: checked })
+                }
               />
               <Label htmlFor="syncWithShopify">Mit Shopify synchronisieren</Label>
             </div>
-            
-            {syncWithShopify && (
-              <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
-                <p className="text-sm text-blue-800">
-                  📦 Dieses Event wird automatisch als Shopify-Produkt erstellt und synchronisiert.
-                  Ticket-Verkäufe werden in Echtzeit zwischen beiden Systemen abgeglichen.
-                </p>
-              </div>
-            )}
-
-            <div className="space-y-2">
-              <Label htmlFor="imageUrl">Event-Bild URL (optional)</Label>
+            <div>
+              <Label htmlFor="imageUrl">Bild URL</Label>
               <Input
                 id="imageUrl"
-                type="url"
-                {...register('imageUrl')}
-                placeholder="https://example.com/event-image.jpg"
+                value={formData.imageUrl}
+                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                placeholder="URL zum Event-Bild"
               />
-              {errors.imageUrl && (
-                <p className="text-destructive text-sm">{errors.imageUrl.message}</p>
-              )}
             </div>
           </div>
-
-          {/* Dokumente & Anhänge */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Dokumente & Medien</h3>
-            <FileUpload
-              onFileUpload={handleFileUpload}
-              onFileRemove={handleFileRemove}
-              existingFiles={attachments}
-              acceptedFileTypes={['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png', '.txt', '.mp4', '.mp3']}
-              maxFileSize={50}
-              bucketName="events"
-              folder="media"
-              className="w-full"
-            />
-          </div>
-
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
-              Abbrechen
-            </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Speichern...' : (editEvent ? 'Aktualisieren' : 'Hinzufügen')}
-            </Button>
+          <DialogFooter className="mt-6">
+            <Button type="submit">Event erstellen</Button>
           </DialogFooter>
         </form>
       </DialogContent>

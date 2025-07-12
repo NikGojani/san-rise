@@ -101,15 +101,15 @@ export default function Calculator() {
   }
 
   const loadData = useCallback(async () => {
-    try {
+      try {
       // Lade Events
-      const eventsResponse = await fetch('/api/events')
+        const eventsResponse = await fetch('/api/events')
       // Lade alle Calculator-Konfigurationen
       const configsResponse = await fetch('/api/calculator-configs?all=true')
-      
+        
       let calculatorEvents: CalculatorEvent[] = []
       if (eventsResponse.ok && configsResponse.ok) {
-        const appEvents: AppEvent[] = await eventsResponse.json()
+          const appEvents: AppEvent[] = await eventsResponse.json()
         const configs: CalculatorConfig[] = await configsResponse.json()
         // Verknüpfe Events mit passender Config
         calculatorEvents = appEvents.map(appEvent => {
@@ -119,46 +119,46 @@ export default function Calculator() {
       }
       setEvents(calculatorEvents)
 
-      // Lade Vertragskosten
-      const contractsResponse = await fetch('/api/contracts')
-      if (contractsResponse.ok) {
-        const contracts: Contract[] = await contractsResponse.json()
-        const monthlyContractCosts = contracts.reduce((total, contract) => {
-          return total + calculateMonthlyAmount(contract.amount, contract.interval)
-        }, 0)
-
-        // Lade zusätzliche Kosten
-        const additionalCostsResponse = await fetch('/api/additional-costs')
-        if (additionalCostsResponse.ok) {
-          const additionalCosts: AdditionalCost[] = await additionalCostsResponse.json()
-          const currentMonth = new Date()
-          const monthlyAdditionalCostsValue = additionalCosts.reduce((total, cost) => {
-            return total + calculateMonthlyCostImpact(cost, currentMonth)
+        // Lade Vertragskosten
+        const contractsResponse = await fetch('/api/contracts')
+        if (contractsResponse.ok) {
+          const contracts: Contract[] = await contractsResponse.json()
+          const monthlyContractCosts = contracts.reduce((total, contract) => {
+            return total + calculateMonthlyAmount(contract.amount, contract.interval)
           }, 0)
 
-          // Lade Mitarbeiterkosten
-          const employeeCostsResponse = await fetch('/api/employee-costs')
-          if (employeeCostsResponse.ok) {
-            const employeeCosts = await employeeCostsResponse.json()
+          // Lade zusätzliche Kosten
+          const additionalCostsResponse = await fetch('/api/additional-costs')
+          if (additionalCostsResponse.ok) {
+            const additionalCosts: AdditionalCost[] = await additionalCostsResponse.json()
+            const currentMonth = new Date()
+            const monthlyAdditionalCostsValue = additionalCosts.reduce((total, cost) => {
+              return total + calculateMonthlyCostImpact(cost, currentMonth)
+            }, 0)
 
-            setMonthlyFixedCosts(prev => ({
-              ...prev,
+            // Lade Mitarbeiterkosten
+            const employeeCostsResponse = await fetch('/api/employee-costs')
+            if (employeeCostsResponse.ok) {
+              const employeeCosts = await employeeCostsResponse.json()
+
+              setMonthlyFixedCosts(prev => ({
+                ...prev,
               vertragskosten: monthlyContractCosts > 0,
               vertragskostenAmount: monthlyContractCosts,
               zusaetzlicheKosten: monthlyAdditionalCostsValue > 0,
               zusaetzlicheKostenAmount: monthlyAdditionalCostsValue,
-              corporateCost: employeeCosts.totalMonthlyCosts > 0,
-              corporateCostAmount: employeeCosts.totalMonthlyCosts,
-            }))
+                corporateCost: employeeCosts.totalMonthlyCosts > 0,
+                corporateCostAmount: employeeCosts.totalMonthlyCosts,
+              }))
+            }
           }
         }
+      } catch (error) {
+        console.error('Fehler beim Laden der Daten:', error)
+        toast.error('Fehler beim Laden der Daten')
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      console.error('Fehler beim Laden der Daten:', error)
-      toast.error('Fehler beim Laden der Daten')
-    } finally {
-      setLoading(false)
-    }
   }, [])
 
   useEffect(() => {
@@ -606,11 +606,11 @@ export default function Calculator() {
                         <SelectValue placeholder="Monat wählen" />
                       </SelectTrigger>
                       <SelectContent>
-                        {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
+                      {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
                           <SelectItem key={month} value={String(month)}>
-                            {new Date(2024, month - 1).toLocaleDateString('de-DE', { month: 'long' })}
+                          {new Date(2024, month - 1).toLocaleDateString('de-DE', { month: 'long' })}
                           </SelectItem>
-                        ))}
+                      ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -621,14 +621,14 @@ export default function Calculator() {
                         <SelectValue placeholder="Jahr wählen" />
                       </SelectTrigger>
                       <SelectContent>
-                        {(() => {
-                          const eventYears = Array.from(new Set(events.map(event => new Date(event.date).getFullYear())))
-                          const currentYear = new Date().getFullYear()
-                          const allYears = [...new Set([...eventYears, currentYear])].sort()
-                          return allYears.map(year => (
+                      {(() => {
+                        const eventYears = Array.from(new Set(events.map(event => new Date(event.date).getFullYear())))
+                        const currentYear = new Date().getFullYear()
+                        const allYears = [...new Set([...eventYears, currentYear])].sort()
+                        return allYears.map(year => (
                             <SelectItem key={year} value={String(year)}>{year}</SelectItem>
-                          ))
-                        })()}
+                        ))
+                      })()}
                       </SelectContent>
                     </Select>
                   </div>
@@ -714,14 +714,14 @@ export default function Calculator() {
                       <SelectValue placeholder="Jahr wählen" />
                     </SelectTrigger>
                     <SelectContent>
-                      {(() => {
-                        const eventYears = Array.from(new Set(events.map(event => new Date(event.date).getFullYear())))
-                        const currentYear = new Date().getFullYear()
-                        const allYears = [...new Set([...eventYears, currentYear])].sort()
-                        return allYears.map(year => (
+                    {(() => {
+                      const eventYears = Array.from(new Set(events.map(event => new Date(event.date).getFullYear())))
+                      const currentYear = new Date().getFullYear()
+                      const allYears = [...new Set([...eventYears, currentYear])].sort()
+                      return allYears.map(year => (
                           <SelectItem key={year} value={String(year)}>{year}</SelectItem>
-                        ))
-                      })()}
+                      ))
+                    })()}
                     </SelectContent>
                   </Select>
                 </div>

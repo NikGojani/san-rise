@@ -341,19 +341,16 @@ export default function Events() {
 
       {/* Add Event Modal */}
       <AddEventModal
-        isOpen={isAddEventModalOpen}
-        onClose={() => setIsAddEventModalOpen(false)}
+        open={isAddEventModalOpen}
+        onOpenChange={setIsAddEventModalOpen}
         onEventAdded={handleEventAdded}
       />
 
       {/* Edit Event Modal */}
       {editEvent && (
         <AddEventModal
-          isOpen={isEditEventModalOpen}
-          onClose={() => {
-            setIsEditEventModalOpen(false)
-            setEditEvent(null)
-          }}
+          open={isEditEventModalOpen}
+          onOpenChange={setIsEditEventModalOpen}
           onEventAdded={handleEventUpdated}
           editEvent={editEvent}
         />

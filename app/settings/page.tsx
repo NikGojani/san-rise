@@ -66,7 +66,7 @@ export default function Settings() {
       gemaPercentage: 9,
       currency: 'EUR',
       logoUrl: '',
-      logoText: '',
+      logoText: 'SAN RISE GMBH',
       profitDistribution: {
         nik: 31.5,
         adrian: 31.5,
@@ -85,20 +85,21 @@ export default function Settings() {
         
         if (data) {
           reset({
-            companyName: data.companyName,
-            gemaPercentage: data.gemaPercentage,
-            currency: data.currency,
+            companyName: data.companyName || 'SAN RISE GMBH',
+            gemaPercentage: data.gemaPercentage || 9,
+            currency: data.currency || 'EUR',
             logoUrl: data.logoUrl || '',
-            logoText: data.logoText || '',
+            logoText: data.logoText || 'SAN RISE GMBH',
             profitDistribution: {
-              nik: data.nikPercentage,
-              adrian: data.adrianPercentage,
-              sebastian: data.sebastianPercentage,
-              mexify: data.mexifyPercentage,
+              nik: data.nikPercentage || 31.5,
+              adrian: data.adrianPercentage || 31.5,
+              sebastian: data.sebastianPercentage || 17,
+              mexify: data.mexifyPercentage || 20,
             },
           })
         }
       } catch (error) {
+        console.error('Fehler beim Laden der Einstellungen:', error)
         toast.error('Fehler beim Laden der Einstellungen')
       }
     }
@@ -116,12 +117,14 @@ export default function Settings() {
       })
 
       if (!response.ok) {
-        throw new Error('Fehler beim Speichern der Einstellungen')
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Fehler beim Speichern der Einstellungen')
       }
 
       toast.success('Einstellungen wurden erfolgreich gespeichert')
     } catch (error) {
-      toast.error('Fehler beim Speichern der Einstellungen')
+      console.error('Fehler beim Speichern der Einstellungen:', error)
+      toast.error(error instanceof Error ? error.message : 'Fehler beim Speichern der Einstellungen')
     } finally {
       setIsLoading(false)
     }
@@ -160,7 +163,7 @@ export default function Settings() {
                 <input
                   {...register('logoText')}
                   type="text"
-                  placeholder="Firmenname (falls abweichend)"
+                  placeholder="SAN RISE GMBH"
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <p className="text-xs text-muted-foreground mt-1">

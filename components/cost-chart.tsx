@@ -99,8 +99,16 @@ export function CostChart() {
                 backgroundColor: "hsl(var(--card))",
                 border: "1px solid hsl(var(--border))",
                 borderRadius: "12px",
-                color: "hsl(var(--foreground))",
+                color: "hsl(var(--primary-foreground))",
                 fontSize: "14px",
+                padding: "8px 12px",
+              }}
+              itemStyle={{
+                color: "hsl(var(--primary-foreground))",
+              }}
+              labelStyle={{
+                color: "hsl(var(--primary-foreground))",
+                fontWeight: "bold",
               }}
             />
             <Legend

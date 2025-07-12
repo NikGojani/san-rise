@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { FileUpload } from '@/components/ui/file-upload'
 import { toast } from 'sonner'
 
 interface AddAdditionalCostModalProps {
@@ -18,35 +19,57 @@ interface AddAdditionalCostModalProps {
   onCostAdded: (cost: AdditionalCost) => void
 }
 
+type FormValues = {
+  name: string
+  amount: number
+  category: string
+  type: 'one-time' | 'monthly' | 'yearly'
+  date: string
+  description?: string
+  attachments: Array<{
+    name: string
+    type: string
+    size: number
+    url: string
+    uploadedAt: string
+  }>
+}
+
 export function AddAdditionalCostModal({ open, onOpenChange, onCostAdded }: AddAdditionalCostModalProps) {
   const [isLoading, setIsLoading] = useState(false)
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+  const [attachments, setAttachments] = useState<Array<{ name: string; url: string }>>([])
 
-  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<FormValues>({
     resolver: zodResolver(additionalCostSchema),
     defaultValues: {
       name: '',
       amount: 0,
       category: '',
-      type: 'one-time' as const,
+      type: 'one-time',
       date: new Date().toISOString().split('T')[0],
       description: '',
       attachments: [],
     },
   })
 
-  const watchedType = watch('type')
+  const handleFileUpload = (fileUrl: string, fileName: string) => {
+    setAttachments(prev => [...prev, { name: fileName, url: fileUrl }])
+  }
 
-  const onSubmit = async (data: any) => {
+  const handleFileRemove = (fileName: string) => {
+    setAttachments(prev => prev.filter(file => file.name !== fileName))
+  }
+
+  const onSubmit = async (data: FormValues) => {
     try {
       setIsLoading(true)
       
-      // Hier würden wir normalerweise die Dateien hochladen und URLs erhalten
-      const uploadedFiles = selectedFiles.map(file => ({
+      // Konvertiere die Anhänge in das richtige Format
+      const formattedAttachments = attachments.map(file => ({
         name: file.name,
-        type: file.type,
-        size: file.size,
-        url: URL.createObjectURL(file),
+        url: file.url,
+        type: file.name.split('.').pop() || 'unknown',
+        size: 0, // Wird nicht benötigt für die Anzeige
         uploadedAt: new Date().toISOString(),
       }))
 
@@ -55,7 +78,7 @@ export function AddAdditionalCostModal({ open, onOpenChange, onCostAdded }: AddA
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...data,
-          attachments: uploadedFiles,
+          attachments: formattedAttachments,
         }),
       })
 
@@ -66,19 +89,13 @@ export function AddAdditionalCostModal({ open, onOpenChange, onCostAdded }: AddA
       const newCost = await response.json()
       onCostAdded(newCost)
       reset()
-      setSelectedFiles([])
+      setAttachments([])
       onOpenChange(false)
       toast.success('Zusätzliche Kosten wurden erfolgreich hinzugefügt')
     } catch (error) {
       toast.error('Fehler beim Hinzufügen der zusätzlichen Kosten')
     } finally {
       setIsLoading(false)
-    }
-  }
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setSelectedFiles(Array.from(e.target.files))
     }
   }
 
@@ -125,16 +142,16 @@ export function AddAdditionalCostModal({ open, onOpenChange, onCostAdded }: AddA
             </div>
             <div className="space-y-2">
               <Label htmlFor="category">Kategorie</Label>
-              <Select value={watch('category')} onValueChange={(value) => setValue('category', value)}>
+              <Select
+                value={watch('category')}
+                onValueChange={(value) => setValue('category', value)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Kategorie wählen" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((category) => (
-                    <SelectItem 
-                      key={category} 
-                      value={category}
-                    >
+                    <SelectItem key={category} value={category}>
                       {category}
                     </SelectItem>
                   ))}
@@ -145,10 +162,13 @@ export function AddAdditionalCostModal({ open, onOpenChange, onCostAdded }: AddA
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="type">Art der Kosten</Label>
-              <Select value={watchedType} onValueChange={(value: any) => setValue('type', value)}>
+              <Label htmlFor="type">Kostentyp</Label>
+              <Select
+                value={watch('type')}
+                onValueChange={(value: 'one-time' | 'monthly' | 'yearly') => setValue('type', value)}
+              >
                 <SelectTrigger>
-                  <SelectValue />
+                  <SelectValue placeholder="Kostentyp wählen" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="one-time">Einmalig</SelectItem>
@@ -184,20 +204,17 @@ export function AddAdditionalCostModal({ open, onOpenChange, onCostAdded }: AddA
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="files">Belege/Dokumente (optional)</Label>
-            <Input
-              id="files"
-              type="file"
-              multiple
-              onChange={handleFileChange}
+            <Label>Belege/Dokumente (optional)</Label>
+            <FileUpload
+              onFileUpload={handleFileUpload}
+              onFileRemove={handleFileRemove}
+              existingFiles={attachments}
+              acceptedFileTypes={['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png']}
+              maxFileSize={15}
+              bucketName="additional-costs"
+              folder="receipts"
+              className="w-full"
             />
-            {selectedFiles.length > 0 && (
-              <ul className="text-sm text-muted-foreground">
-                {selectedFiles.map((file, index) => (
-                  <li key={index}>{file.name} ({(file.size / 1024).toFixed(1)} KB)</li>
-                ))}
-              </ul>
-            )}
           </div>
           <DialogFooter>
             <Button 
@@ -208,11 +225,8 @@ export function AddAdditionalCostModal({ open, onOpenChange, onCostAdded }: AddA
             >
               Abbrechen
             </Button>
-            <Button 
-              type="submit" 
-              disabled={isLoading}
-            >
-              {isLoading ? 'Wird hinzugefügt...' : 'Kosten hinzufügen'}
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? 'Wird gespeichert...' : 'Hinzufügen'}
             </Button>
           </DialogFooter>
         </form>
