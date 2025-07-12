@@ -66,7 +66,7 @@ export default function Settings() {
       gemaPercentage: 9,
       currency: 'EUR',
       logoUrl: '',
-      logoText: '',
+      logoText: 'SAN RISE GMBH',
       profitDistribution: {
         nik: 31.5,
         adrian: 31.5,

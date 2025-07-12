@@ -180,13 +180,14 @@ export default function Calculator() {
       let response
       let eventId = event.id
       
-      if (editingEvent) {
-        // Update existing event
+      if (editingEvent && editingEvent.id) {
+        // Update existing event - verwende die ID vom editingEvent
         response = await fetch('/api/events', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...appEventData, id: event.id }),
+          body: JSON.stringify({ ...appEventData, id: editingEvent.id }),
         })
+        eventId = editingEvent.id
       } else {
         // Create new event
         response = await fetch('/api/events', {
@@ -207,13 +208,10 @@ export default function Calculator() {
         return
       }
       
-      // Calculator-Konfiguration wird jetzt direkt in den Event-Daten gespeichert
-      // Keine separate Tabelle mehr nötig - alles in einem Event vereint!
-      
       // Update lokale State
       const finalEvent = { ...event, id: eventId }
-      if (editingEvent) {
-        setEvents(prev => prev.map(e => e.id === eventId ? finalEvent : e))
+      if (editingEvent && editingEvent.id) {
+        setEvents(prev => prev.map(e => e.id === editingEvent.id ? finalEvent : e))
         toast.success('Event erfolgreich aktualisiert')
       } else {
         setEvents(prev => [...prev, finalEvent])
@@ -226,6 +224,7 @@ export default function Calculator() {
       return
     }
     setEditingEvent(undefined)
+    setIsEventModalOpen(false)
     // Nach dem Speichern Events und Kalkulationen neu laden
     loadData()
   }

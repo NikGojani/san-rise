@@ -2,19 +2,6 @@
 
 # dependencies
 /node_modules
-<<<<<<< HEAD
-=======
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
-
-# testing
-/coverage
->>>>>>> d975cecce1c7bc2cc00ae34aa6c8b7e0ef0ea023
 
 # next.js
 /.next/
@@ -23,24 +10,13 @@
 # production
 /build
 
-<<<<<<< HEAD
-=======
-# misc
-.DS_Store
-*.pem
-
->>>>>>> d975cecce1c7bc2cc00ae34aa6c8b7e0ef0ea023
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-<<<<<<< HEAD
 # env files
-=======
-# env files (can opt-in for committing if needed)
->>>>>>> d975cecce1c7bc2cc00ae34aa6c8b7e0ef0ea023
 .env*
 
 # vercel
@@ -48,8 +24,4 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-<<<<<<< HEAD
 next-env.d.ts
-=======
-next-env.d.ts
->>>>>>> d975cecce1c7bc2cc00ae34aa6c8b7e0ef0ea023
